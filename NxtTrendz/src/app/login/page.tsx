@@ -12,6 +12,7 @@ export default function LoginPage() {
         width={600}
         height={500}
         alt="shopping Image"
+        priority
         className="relative mt-30 lg:mt-0 w-[500px] h-full"
       />
       <LoginForm />

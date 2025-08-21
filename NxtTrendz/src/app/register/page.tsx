@@ -12,7 +12,8 @@ export default function RegisterPage() {
         width={600}
         height={500}
         alt="shopping Image"
-        className="relative mt-30 lg:mt-0 w-[500px] h-full"
+        priority
+        className="mt-30 lg:mt-0 w-[450px] h-full"
       />
       <RegisterForm />
     </div>
