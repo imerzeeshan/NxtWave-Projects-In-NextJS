@@ -11,9 +11,8 @@ export default function LoginPage() {
         src={"/images/login-img.png"}
         width={600}
         height={500}
-        priority
         alt="shopping Image"
-        className="relative mt-30"
+        className="relative mt-30 lg:mt-0 w-[500px] h-full"
       />
       <LoginForm />
     </div>
