@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { products } from "../../../public/assets";
-import { Product } from "../../../types";
+import { Product } from "../../types/types";
 
 type User = {
   id: string;
