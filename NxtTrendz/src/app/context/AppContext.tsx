@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { products } from "../../../public/assets";
+import { Product } from "../../../types";
 
 type User = {
   id: string;
@@ -14,6 +16,7 @@ type AppContextType = {
   loggedIn: boolean;
   loading: boolean;
   refreshSession: () => Promise<void>; // function to manually refresh session
+  products: Product[] | [];
 };
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -53,6 +56,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         loading,
         loggedIn: !!user,
         refreshSession: fetchSession,
+        products,
       }}
     >
       {children}
