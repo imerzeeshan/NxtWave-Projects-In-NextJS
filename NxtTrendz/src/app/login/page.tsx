@@ -8,7 +8,7 @@ export default function LoginPage() {
     bg-gray-100 px-4"
     >
       <Image
-        src={"/images/login-img.png"}
+        src={"/images/loginImage.png"}
         width={600}
         height={500}
         alt="shopping Image"
