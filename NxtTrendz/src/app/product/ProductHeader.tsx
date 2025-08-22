@@ -1,4 +1,5 @@
 import { AlignRight } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 const sortbyOptions = [
   {
@@ -12,14 +13,33 @@ const sortbyOptions = [
 ];
 
 export default function ProductHeader() {
+  const { sortBy, setSortBy } = useAppContext();
   return (
     <div className="flex justify-between mb-7">
-      <h1 className="text-3xl font-semibold text-gray-700/90">All Products</h1>
-      <div className="flex gap-2 items-center text-gray-500">
-        <AlignRight /> sort by
-        <select name="" id="">
-          <option value="">Price (High-Low)</option>
-          <option value="">Price (Low-High)</option>
+      <h1 className="text-xl md:text-2xl md:font-semibold text-gray-700/90">
+        All Products
+      </h1>
+      <div className="flex gap-1 items-center text-gray-500">
+        <div className="w-full flex gap-2 items-center">
+          <AlignRight /> <span className="hidden md:block">sort by</span>
+        </div>
+        <select
+          className="border p-1 rounded"
+          value={sortBy || ""}
+          onChange={(e) =>
+            setSortBy(
+              e.target.value
+                ? (e.target.value as "PRICE_HIGH" | "PRICE_LOW")
+                : null
+            )
+          }
+        >
+          <option value="">select</option>
+          {sortbyOptions.map((option) => (
+            <option value={option.optionId} key={option.optionId}>
+              {option.displayText}
+            </option>
+          ))}
         </select>
       </div>
     </div>

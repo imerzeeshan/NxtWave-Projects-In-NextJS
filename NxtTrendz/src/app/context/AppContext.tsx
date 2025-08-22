@@ -10,13 +10,19 @@ type User = {
   name: string;
 };
 
+type SortBy = "PRICE_HIGH" | "PRICE_LOW" | null;
+
 type AppContextType = {
   router: ReturnType<typeof useRouter>;
   user: User | null;
   loggedIn: boolean;
   loading: boolean;
   refreshSession: () => Promise<void>; // function to manually refresh session
-  products: Product[] | [];
+  filteredProducts: Product[] | [];
+  mainProducts: Product[] | [];
+  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  sortBy: SortBy;
+  setSortBy: (value: SortBy) => void;
 };
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -24,7 +30,11 @@ const AppContext = createContext<AppContextType | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [sortBy, setSortBy] = useState<SortBy>(null);
   const [loading, setLoading] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | []>(
+    products
+  );
 
   const fetchSession = async () => {
     setLoading(true);
@@ -56,7 +66,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         loading,
         loggedIn: !!user,
         refreshSession: fetchSession,
-        products,
+        filteredProducts,
+        setFilteredProducts,
+        mainProducts: products,
+        sortBy,
+        setSortBy,
       }}
     >
       {children}
