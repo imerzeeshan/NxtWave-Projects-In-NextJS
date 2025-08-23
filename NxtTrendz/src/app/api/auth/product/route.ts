@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    let { title, brand, price, rating, categoryType, imageUrl } = body;
+    const { title, brand, price, rating, categoryType, imageUrl } = body;
     console.log(title, brand, price, rating, categoryType, imageUrl);
     if (!title || !brand || !price || !rating || !categoryType || !imageUrl) {
       return NextResponse.json(
@@ -15,11 +15,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Convert string values to numbers if needed
-    price = Number(price);
-    rating = Number(rating);
+    const isPrice = Number(price);
+    const isRating = Number(rating);
 
     // Validate price
-    if (isNaN(price) || price <= 0) {
+    if (isNaN(isPrice) || isPrice <= 0) {
       return NextResponse.json(
         { success: false, message: "Price must be a positive number" },
         { status: 400 }
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate rating
-    if (isNaN(rating) || rating < 1 || rating > 5) {
+    if (isNaN(isRating) || isRating < 1 || isRating > 5) {
       return NextResponse.json(
         { success: false, message: "Rating must be a number between 1 and 5" },
         { status: 400 }
