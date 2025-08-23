@@ -113,7 +113,7 @@ export default function FilterGroup({ products }: { products: Product[] }) {
       <div className="flex items-center bg-gray-100 border rounded h-10 w-full max-w-md">
         <input
           type="search"
-          className="flex-1 outline-0 px-3 text-sm sm:text-base md:text-lg text-gray-600 
+          className="md:w-[200px] lg:w-[300px] outline-0 px-3 text-sm sm:text-base md:text-lg text-gray-600 
                bg-transparent placeholder:text-gray-400"
           placeholder="Search"
           value={search}

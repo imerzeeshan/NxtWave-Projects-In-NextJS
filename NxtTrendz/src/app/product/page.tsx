@@ -7,15 +7,19 @@ import ProductHeader from "./ProductHeader";
 const ProductsPage = () => {
   const { filteredProducts } = useAppContext();
   return (
-    <div className="max-w-[90%] xl:max-w-[80%] mx-auto mt-25 flex flex-col md:flex-row gap-5">
-      <div className="flex-1">
-        <FilterGroup products={filteredProducts} />
-      </div>
+    <div
+      className="max-w-[90%] xl:max-w-[80%] mx-auto mt-25 grid grid-cols-1 md:grid-cols-[200px_1fr]
+    lg:grid-cols-[200px_1fr] gap-5"
+    >
+      <FilterGroup products={filteredProducts} />
       <div className="flex-3">
         <ProductHeader />
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-blue-50 rounded shadow w-full">
+            <div
+              key={product.id}
+              className="bg-blue-50 rounded shadow-xl w-full"
+            >
               <img
                 src={product.image_url}
                 alt="product Image"
@@ -27,7 +31,7 @@ const ProductsPage = () => {
                 <div className="flex justify-between mt-2">
                   <p className="text-gray-800 font-medium">${product.price}</p>
                   <p className="bg-blue-600 text-white px-2 py-1 rounded flex items-center gap-2">
-                    <Star size={20}/> {product.rating}
+                    <Star size={20} /> {product.rating}
                   </p>
                 </div>
               </div>

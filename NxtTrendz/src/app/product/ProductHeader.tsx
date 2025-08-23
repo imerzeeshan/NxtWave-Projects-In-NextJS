@@ -15,11 +15,11 @@ const sortbyOptions = [
 export default function ProductHeader() {
   const { sortBy, setSortBy } = useAppContext();
   return (
-    <div className="flex justify-between mb-7">
-      <h1 className="text-xl md:text-2xl md:font-semibold text-gray-700/90">
+    <div className="grid grid-cols-[auto_235px] gap-2 mb-7">
+      <h1 className="w-full md:text-center text-2xl md:font-semibold text-gray-700/90">
         All Products
       </h1>
-      <div className="flex gap-1 items-center text-gray-500">
+      <div className="w-full flex gap-1 items-center text-gray-500">
         <div className="w-full flex gap-2 items-center">
           <AlignRight /> <span className="hidden md:block">sort by</span>
         </div>
