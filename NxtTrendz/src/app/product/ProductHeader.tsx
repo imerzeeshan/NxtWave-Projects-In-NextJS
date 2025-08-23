@@ -15,7 +15,7 @@ const sortbyOptions = [
 export default function ProductHeader() {
   const { sortBy, setSortBy } = useAppContext();
   return (
-    <div className="grid grid-cols-[auto_235px] gap-2 mb-7">
+    <div className="grid grid-cols-[auto_235px] gap-2 mb-7 md:mb-0 md:pt-4">
       <h1 className="w-full md:text-center text-2xl md:font-semibold text-gray-700/90">
         All Products
       </h1>
