@@ -3,9 +3,23 @@ import { Star } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 import FilterGroup from "./FilterGroup";
 import ProductHeader from "./ProductHeader";
+import { useEffect } from "react";
 
 const ProductsPage = () => {
-  const { filteredProducts } = useAppContext();
+  const { filteredProducts, setFilteredProducts } = useAppContext();
+  console.log(filteredProducts);
+
+  const getAllProducts = async () => {
+    const res = await fetch("/api/auth/product", {
+      method: "GET",
+    });
+    const data = await res.json();
+    setFilteredProducts(data.products);
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
   return (
     <div
       className="max-w-[90%] xl:max-w-[80%] mx-auto mt-25 grid grid-cols-1 md:grid-cols-[200px_1fr]
@@ -25,14 +39,14 @@ const ProductsPage = () => {
 
         {/* Product cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
-          {filteredProducts.map((product) => (
+          {filteredProducts?.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="bg-blue-50 rounded shadow-xl w-full group"
             >
               <div className="overflow-hidden w-full">
                 <img
-                  src={product.image_url}
+                  src={product.image.url}
                   alt="product Image"
                   className="w-full rounded-t group-hover:scale-105 transition-all duration-300"
                 />

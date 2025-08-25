@@ -1,13 +1,55 @@
 import { connectToDatabase } from "@/lib/db";
 import Product from "@/models/Product";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    await connectToDatabase();
+    const products = await Product.find({});
+    if (!products) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No Products Found",
+        },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json(
+      { success: true, message: "Products Founded", products },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal Sever Error",
+      },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title, brand, price, rating, categoryType, imageUrl } = body;
-    console.log(title, brand, price, rating, categoryType, imageUrl);
-    if (!title || !brand || !price || !rating || !categoryType || !imageUrl) {
+    // console.log(body);
+    const { title, brand, price, rating, category, url, thumbnailUrl, fileId } =
+      body;
+    // console.log(title, brand, price, rating, category);
+
+    if (
+      !title ||
+      !brand ||
+      !price ||
+      !rating ||
+      !category ||
+      !url ||
+      !fileId ||
+      !thumbnailUrl
+    ) {
       return NextResponse.json(
         { success: false, message: "All Details are Required" },
         { status: 400 }
@@ -40,9 +82,10 @@ export async function POST(req: NextRequest) {
       brand,
       price,
       rating,
-      categoryType,
-      imageUrl,
+      category,
+      image: { url, fileId, thumbnailUrl },
     });
+    revalidatePath("/product");
     return NextResponse.json(
       { success: true, message: "Product Added Succesfully", product },
       { status: 201 }

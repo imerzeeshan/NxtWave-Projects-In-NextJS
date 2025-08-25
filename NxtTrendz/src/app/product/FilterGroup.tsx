@@ -62,7 +62,7 @@ const ratingsList = [
 ];
 
 export default function FilterGroup({ products }: { products: Product[] }) {
-  const { mainProducts, setFilteredProducts, sortBy, setSortBy } =
+  const { filteredProducts, setFilteredProducts, sortBy, setSortBy } =
     useAppContext();
   const [search, setSearch] = useState("");
   const [appliedSearch, setAppliedSearch] = useState("");
@@ -75,7 +75,7 @@ export default function FilterGroup({ products }: { products: Product[] }) {
     setSelectedCategory(null);
     setSelectedRating(0);
     // setSelectedSort(null);
-    setFilteredProducts(mainProducts);
+    setFilteredProducts(filteredProducts);
     setSortBy(null);
   };
 
@@ -84,7 +84,7 @@ export default function FilterGroup({ products }: { products: Product[] }) {
   };
 
   useEffect(() => {
-    let filtered = [...mainProducts];
+    let filtered = [...filteredProducts];
 
     if (appliedSearch.trim()) {
       filtered = filtered.filter((product) =>

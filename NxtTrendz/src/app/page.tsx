@@ -8,7 +8,7 @@ import CTA from "@/components/CTA";
 
 export default function Home() {
   return (
-    <main>
+    <main className="mt-30">
       <Hero />
       <Categories />
       <FeaturedProducts />
