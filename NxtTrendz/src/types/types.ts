@@ -5,4 +5,5 @@ export type Product = {
   _id: string;
   image: { url: string; thumbnailUrl: string; fileId: string };
   rating: string;
+  category: string;
 };

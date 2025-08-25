@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await User.create({ name, email, password });
+    await User.create({ name, email, password, role: "user" });
 
     return NextResponse.json(
       {

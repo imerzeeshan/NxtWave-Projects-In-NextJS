@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-import { products } from "../../../public/assets";
 import { Product } from "../../types/types";
 import { ImageKitProvider } from "@imagekit/next";
 
@@ -20,7 +19,9 @@ type AppContextType = {
   loading: boolean;
   refreshSession: () => Promise<void>; // function to manually refresh session
   filteredProducts: Product[] | [];
-  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  products: Product[] | [];
+  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]> >;
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   sortBy: SortBy;
   setSortBy: (value: SortBy) => void;
 };
@@ -33,7 +34,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [sortBy, setSortBy] = useState<SortBy>(null);
   const [loading, setLoading] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<Product[] | []>([]);
+  const [products, setProducts] = useState<Product[] | []>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | []>(
+    products
+  );
 
   const fetchSession = async () => {
     setLoading(true);
@@ -69,6 +73,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setFilteredProducts,
         sortBy,
         setSortBy,
+        products,
+        setProducts,
       }}
     >
       <ImageKitProvider urlEndpoint={urlEndPoint}>{children}</ImageKitProvider>

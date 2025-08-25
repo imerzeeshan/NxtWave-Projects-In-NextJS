@@ -1,12 +1,11 @@
 import { Search } from "lucide-react";
 import RatingStars from "./RatingStars";
-import { Product } from "../../types/types";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 
 const categoryOptions = [
   {
-    name: "Clothing",
+    name: "Clothes",
     categoryId: "1",
   },
   {
@@ -61,9 +60,8 @@ const ratingsList = [
   },
 ];
 
-export default function FilterGroup({ products }: { products: Product[] }) {
-  const { filteredProducts, setFilteredProducts, sortBy, setSortBy } =
-    useAppContext();
+export default function FilterGroup() {
+  const { products, setFilteredProducts, sortBy, setSortBy } = useAppContext();
   const [search, setSearch] = useState("");
   const [appliedSearch, setAppliedSearch] = useState("");
   const [selectedCatogory, setSelectedCategory] = useState<string | null>(null);
@@ -75,7 +73,7 @@ export default function FilterGroup({ products }: { products: Product[] }) {
     setSelectedCategory(null);
     setSelectedRating(0);
     // setSelectedSort(null);
-    setFilteredProducts(filteredProducts);
+    setFilteredProducts(products);
     setSortBy(null);
   };
 
@@ -84,11 +82,17 @@ export default function FilterGroup({ products }: { products: Product[] }) {
   };
 
   useEffect(() => {
-    let filtered = [...filteredProducts];
+    let filtered = [...products];
 
     if (appliedSearch.trim()) {
       filtered = filtered.filter((product) =>
         product.title.toLowerCase().includes(appliedSearch.trim().toLowerCase())
+      );
+    }
+
+    if (selectedCatogory !== null) {
+      filtered = filtered.filter(
+        (product) => product.category === selectedCatogory
       );
     }
 
@@ -106,7 +110,7 @@ export default function FilterGroup({ products }: { products: Product[] }) {
     }
 
     setFilteredProducts(filtered);
-  }, [appliedSearch, selectedRating, sortBy]);
+  }, [appliedSearch, selectedRating, sortBy, selectedCatogory]);
 
   return (
     <div className="w-fit flex flex-col gap-5 mx-auto">
@@ -134,7 +138,12 @@ export default function FilterGroup({ products }: { products: Product[] }) {
         <h1 className="text-xl font-semibold text-gray-700">Category</h1>
         {categoryOptions.map((category) => (
           <div
-            className={`cursor-pointer py-1.5 px-1 w-45 text-xl text-gray-500 hover:bg-gray-100`}
+            className={`cursor-pointer py-1.5 px-1 w-45 text-xl ${
+              selectedCatogory === category.name
+                ? "text-blue-500"
+                : "text-gray-500"
+            } hover:bg-gray-100`}
+            onClick={() => setSelectedCategory(category.name)}
             key={category.categoryId}
           >
             {category.name}

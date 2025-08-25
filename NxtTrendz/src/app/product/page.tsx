@@ -6,15 +6,18 @@ import ProductHeader from "./ProductHeader";
 import { useEffect } from "react";
 
 const ProductsPage = () => {
-  const { filteredProducts, setFilteredProducts } = useAppContext();
+  const { filteredProducts, setProducts, setFilteredProducts } = useAppContext();
   console.log(filteredProducts);
 
   const getAllProducts = async () => {
     const res = await fetch("/api/auth/product", {
       method: "GET",
     });
-    const data = await res.json();
-    setFilteredProducts(data.products);
+    if (res.ok) {
+      const data = await res.json();
+      setProducts(data.products);
+      setFilteredProducts(data.products);
+    }
   };
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const ProductsPage = () => {
     >
       {/* Sidebar filter sticky */}
       <div className="md:sticky md:top-12 self-start z-10 ">
-        <FilterGroup products={filteredProducts} />
+        <FilterGroup />
       </div>
 
       {/* Main content */}
@@ -38,7 +41,7 @@ const ProductsPage = () => {
         </div>
 
         {/* Product cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-4">
           {filteredProducts?.map((product) => (
             <div
               key={product._id}
