@@ -6,4 +6,8 @@ export type Product = {
   image: { url: string; thumbnailUrl: string; fileId: string };
   rating: string;
   category: string;
+  description: string;
+  style: string;
+  totalReviews: number;
+  availability: string;
 };

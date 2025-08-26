@@ -19,6 +19,10 @@ const ProductFormDetails = () => {
       const rating = Number(formData.get("rating"));
       const brand = formData.get("brand") as string;
       const category = formData.get("category") as string;
+      const style = formData.get("style") as string;
+      const description = formData.get("description") as string;
+      const totalReviews = formData.get("totalReviews") as string;
+      const availability = formData.get("availability") as string;
       const file = formData.get("imageFile") as File;
 
       const imgkitAuthRes = await fetch("/api/auth/imagekit-auth");
@@ -51,11 +55,15 @@ const ProductFormDetails = () => {
           rating,
           brand,
           category,
+          style,
+          description,
+          totalReviews,
+          availability,
         }),
       });
 
       if (!res.ok) {
-        console.log(res);
+        console.log(await res.json());
         const deleteImgRes = await fetch("/api/auth/imagekit-auth", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -97,8 +105,34 @@ const ProductFormDetails = () => {
         />
         <input
           type="text"
+          name="style"
+          placeholder="style"
+          className="border"
+        />
+
+        <input
+          type="number"
+          name="totalReviews"
+          placeholder="Total Reviews"
+          className="border"
+        />
+        <input
+          type="text"
+          name="availability"
+          placeholder="availability"
+          className="border"
+        />
+        <input
+          type="text"
           name="category"
           placeholder="category"
+          className="border"
+        />
+        <textarea
+          rows={5}
+          cols={30}
+          name="description"
+          placeholder="description"
           className="border"
         />
         <input

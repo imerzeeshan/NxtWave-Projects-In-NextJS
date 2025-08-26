@@ -36,9 +36,21 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     // console.log(body);
-    const { title, brand, price, rating, category, url, thumbnailUrl, fileId } =
-      body;
-    // console.log(title, brand, price, rating, category);
+    const {
+      title,
+      brand,
+      price,
+      rating,
+      category,
+      url,
+      thumbnailUrl,
+      fileId,
+      style,
+      description,
+      totalReviews,
+      availability,
+    } = body;
+    console.log(style, description, totalReviews, availability);
 
     if (
       !title ||
@@ -48,7 +60,11 @@ export async function POST(req: NextRequest) {
       !category ||
       !url ||
       !fileId ||
-      !thumbnailUrl
+      !thumbnailUrl ||
+      !style ||
+      !description ||
+      !totalReviews ||
+      !availability
     ) {
       return NextResponse.json(
         { success: false, message: "All Details are Required" },
@@ -59,11 +75,20 @@ export async function POST(req: NextRequest) {
     // Convert string values to numbers if needed
     const isPrice = Number(price);
     const isRating = Number(rating);
+    const isTotalReviews = Number(totalReviews);
 
     // Validate price
     if (isNaN(isPrice) || isPrice <= 0) {
       return NextResponse.json(
         { success: false, message: "Price must be a positive number" },
+        { status: 400 }
+      );
+    }
+
+    // Validate Reviews
+    if (isNaN(isTotalReviews) || isTotalReviews < 0) {
+      return NextResponse.json(
+        { success: false, message: "Total Reviews must be a positive number" },
         { status: 400 }
       );
     }
@@ -83,6 +108,10 @@ export async function POST(req: NextRequest) {
       price,
       rating,
       category,
+      style,
+      description,
+      totalReviews,
+      availability,
       image: { url, fileId, thumbnailUrl },
     });
     revalidatePath("/product");

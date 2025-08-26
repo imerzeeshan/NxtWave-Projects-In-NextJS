@@ -4,9 +4,11 @@ import { useAppContext } from "../context/AppContext";
 import FilterGroup from "./FilterGroup";
 import ProductHeader from "./ProductHeader";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const ProductsPage = () => {
-  const { filteredProducts, setProducts, setFilteredProducts } = useAppContext();
+  const { filteredProducts, setProducts, setFilteredProducts } =
+    useAppContext();
   console.log(filteredProducts);
 
   const getAllProducts = async () => {
@@ -43,7 +45,8 @@ const ProductsPage = () => {
         {/* Product cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-4">
           {filteredProducts?.map((product) => (
-            <div
+            <Link
+              href={`/product/${product._id}`}
               key={product._id}
               className="bg-blue-50 rounded shadow-xl w-full group"
             >
@@ -66,7 +69,7 @@ const ProductsPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
