@@ -4,11 +4,11 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken"; // assuming you use JWT for auth
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("auth-token")?.value;
+  const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
   const method = request.method;
 
-  let userRole = "guest";
+  let userRole = "user";
 
   if (token) {
     try {
@@ -54,5 +54,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  //   matcher: ["/cart/:path*", "/api/product/:path*", "/admin/product-upload/:path*"],
+  matcher: ["/cart/:path*"],
+  // matcher: ["/cart/:path*", "/api/product/:path*", "/admin/product-upload/:path*"],
 };

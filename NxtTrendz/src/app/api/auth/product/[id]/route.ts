@@ -16,7 +16,14 @@ export async function GET(
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ product }, { status: 200 });
+    const similarProducts = await Product.find({
+      category: product.category,
+      _id: { $not: { $eq: product._id } },
+    }).limit(4);
+
+    const productDetails = { product, similarProducts };
+
+    return NextResponse.json({ productDetails }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
