@@ -139,3 +139,15 @@ export async function PATCH(req: NextRequest) {
     console.error(error);
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { userId } = await req.json();
+
+    await Cart.deleteMany({ userId });
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, error }, { status: 500 });
+  }
+}

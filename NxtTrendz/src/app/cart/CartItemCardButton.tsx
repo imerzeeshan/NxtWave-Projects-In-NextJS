@@ -18,6 +18,7 @@ const CartItemCardButton = ({
   //   console.log(productId, user);
 
   const handleIncrease = async (action: "increase" | "decrease") => {
+    onQuantityChange(productId, action);
     const res = await fetch("/api/auth/cart", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -25,13 +26,10 @@ const CartItemCardButton = ({
     });
     const data = await res.json();
     console.log(data);
-    if (res.ok) {
-      onQuantityChange(productId, action);
-    }
   };
 
   return (
-    <div className="flex gap-3 items-center justify-end">
+    <div className="flex gap-3 items-center justify-center">
       <button
         onClick={() => handleIncrease("decrease")}
         className="border-2 rounded px-2.5 flex items-center justify-center border-gray-500 cursor-pointer

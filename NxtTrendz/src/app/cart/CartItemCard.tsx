@@ -38,7 +38,7 @@ const CartItemCard = ({
   return (
     <div
       key={item._id}
-      className="grid grid-cols-[1fr_150px_150px] gap-5 shadow-[-1px_1px_10px_rgba(0,0,0,0.2)]
+      className="grid grid-cols-[1fr_150px_150px] lg:grid-cols-3 gap-5 shadow-[-1px_1px_10px_rgba(0,0,0,0.2)]
             py-4 px-8 bg-white rounded-lg"
     >
       <div className="flex gap-5">
