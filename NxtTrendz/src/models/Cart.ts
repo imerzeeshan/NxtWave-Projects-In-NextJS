@@ -5,8 +5,6 @@ export interface NCart {
   productId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   productCount: number;
-  title: string;
-  brand: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -19,8 +17,6 @@ const userCartSchema = new Schema(
       required: true,
     },
     productCount: { type: Number, required: true, default: 1 },
-    title: { type: String, required: true },
-    brand: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
