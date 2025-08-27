@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
 
 interface CustomJwtPayload extends jwt.JwtPayload {
   id: string;
@@ -99,7 +100,7 @@ export async function GET() {
 
     // const products = await Cart.find({ userId: (decode as jwt.JwtPayload).id });
     console.log(products);
-
+    // revalidatePath("/cart");
     return NextResponse.json({ success: true, products }, { status: 200 });
   } catch (error) {
     console.error(error);
@@ -110,5 +111,31 @@ export async function GET() {
       },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { productId, userId, action } = await req.json();
+    await connectToDatabase();
+    if (action === "increase") {
+      await Cart.findOneAndUpdate(
+        { productId, userId },
+        { $inc: { productCount: 1 } },
+        { new: true }
+      );
+    } else if (action === "decrease") {
+      await Cart.findOneAndUpdate(
+        { productId, userId, productCount: { $gt: 1 } },
+        { $inc: { productCount: -1 } },
+        { new: true }
+      );
+    } else {
+      await Cart.findOneAndDelete({ productId, userId });
+    }
+    revalidatePath("/cart");
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error(error);
   }
 }
