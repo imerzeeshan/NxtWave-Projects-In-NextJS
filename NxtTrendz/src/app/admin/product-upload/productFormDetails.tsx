@@ -1,4 +1,5 @@
 "use client";
+import { useAppContext } from "@/app/context/AppContext";
 import ImageKit, { upload } from "@imagekit/next";
 // import ImageKit from "@imagekit/next";
 
@@ -12,6 +13,7 @@ type FormInput = {
 };
 
 const ProductFormDetails = () => {
+  const { user } = useAppContext();
   const handleFormAction = async (formData: FormData) => {
     try {
       const title = formData.get("title") as string;
@@ -59,6 +61,7 @@ const ProductFormDetails = () => {
           description,
           totalReviews,
           availability,
+          seller: user?.id,
         }),
       });
 

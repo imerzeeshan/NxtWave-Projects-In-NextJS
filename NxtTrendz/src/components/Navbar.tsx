@@ -92,141 +92,70 @@ export default function Navbar() {
           </Link>
         </div>
         {/* Desktop Menu */}
-        {/* //* for user only */}
-        {user?.role !== "seller" && user?.role !== "admin" && (
-          <div className="relative hidden md:flex gap-10">
-            <ul
-              ref={navRef}
-              className="flex items-center space-x-8 font-medium relative"
-            >
-              <li>
-                <Link href="/" className={linkClasses("/")}>
-                  Home
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/product" className={linkClasses("/product")}>
-                  Product
-                </Link>
-              </li>
-              <li>
-                <Link href="/cart" className={linkClasses("/cart")}>
-                  Cart
-                </Link>
-              </li>
-            </ul>
-            {!loggedIn ? (
-              <div className="flex gap-5">
-                <Link
-                  href="/login"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Login
-                </Link>
-
-                <Link
-                  href="/register"
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                >
-                  Register
-                </Link>
-              </div>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
-            )}
-
-            {/* 🔹 Sliding underline indicator for active route */}
-            <span
-              className="absolute bottom-1 h-[2px] bg-blue-600 transition-all duration-300"
-              style={{
-                left: underlineStyle.left,
-                width: underlineStyle.width,
-                opacity: underlineStyle.opacity,
-              }}
-            />
-          </div>
-        )}
-
-        {/* //* for seller only*/}
-        {user?.role === "seller" && (
-          <div className="relative hidden md:flex gap-10">
-            <ul
-              ref={navRef}
-              className="flex items-center space-x-8 font-medium relative"
-            >
-              <li>
-                <Link href="/" className={linkClasses("/")}>
-                  Home
-                </Link>
-              </li>
+        <div className="relative hidden md:flex gap-10">
+          <ul
+            ref={navRef}
+            className="flex items-center space-x-8 font-medium relative"
+          >
+            <li>
+              <Link href="/" className={linkClasses("/")}>
+                Home
+              </Link>
+            </li>
+            {user?.role === "seller" && (
               <li>
                 <Link href="/seller" className={linkClasses("/seller")}>
                   Dashboard
                 </Link>
               </li>
-
-              <li>
-                <Link href="/product" className={linkClasses("/product")}>
-                  Products
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/seller/product"
-                  className={linkClasses("/seller/product")}
-                >
-                  My Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/cart" className={linkClasses("/cart")}>
-                  Cart
-                </Link>
-              </li>
-            </ul>
-            {!loggedIn ? (
-              <div className="flex gap-5">
-                <Link
-                  href="/login"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Login
-                </Link>
-
-                <Link
-                  href="/register"
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                >
-                  Register
-                </Link>
-              </div>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
             )}
+            <li>
+              <Link href="/product" className={linkClasses("/product")}>
+                Products
+              </Link>
+            </li>
+            <li>
+              <Link href="/cart" className={linkClasses("/cart")}>
+                Cart
+              </Link>
+            </li>
+          </ul>
+          {!loggedIn ? (
+            <div className="flex gap-5">
+              <Link
+                href="/login"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Login
+              </Link>
 
-            {/* 🔹 Sliding underline indicator for active route */}
-            <span
-              className="absolute bottom-1 h-[2px] bg-blue-600 transition-all duration-300"
-              style={{
-                left: underlineStyle.left,
-                width: underlineStyle.width,
-                opacity: underlineStyle.opacity,
-              }}
-            />
-          </div>
-        )}
+              <Link
+                href="/register"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Register
+              </Link>
+            </div>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+            >
+              Logout
+            </button>
+          )}
+
+          {/* 🔹 Sliding underline indicator for active route */}
+          <span
+            className="absolute bottom-1 h-[2px] bg-blue-600 transition-all duration-300"
+            style={{
+              left: underlineStyle.left,
+              width: underlineStyle.width,
+              opacity: underlineStyle.opacity,
+            }}
+          />
+        </div>
+
         {/* Mobile Menu Button */}
         <button
           className="md:hidden p-2 rounded-md hover:bg-gray-100"

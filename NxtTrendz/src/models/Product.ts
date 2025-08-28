@@ -18,6 +18,7 @@ export interface NProduct {
   totalReviews: number;
   availability: string;
   image: Image;
+  seller: mongoose.Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -33,6 +34,7 @@ const productSchema = new Schema(
     description: { type: String, required: true },
     totalReviews: { type: Number, required: true },
     availability: { type: String, required: true },
+    seller: { type: Schema.Types.ObjectId, ref: "User", required: true },
     image: {
       fileId: String,
       url: String,

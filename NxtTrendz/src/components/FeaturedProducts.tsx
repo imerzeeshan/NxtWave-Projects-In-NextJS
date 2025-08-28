@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const products = [
-  { id: 1, name: "Casual Shirt", price: 29.99, image: "/images/shirt1.png" },
-  { id: 2, name: "Summer Dress", price: 39.99, image: "/images/dress1.png" },
-  { id: 3, name: "Denim Jacket", price: 59.99, image: "/images/jacket1.png" },
+  { id: 1, name: "Casual Shirt", price: 29.99, image: "/images/placeholder.jpg" },
+  { id: 2, name: "Summer Dress", price: 39.99, image: "/images/placeholder.jpg" },
+  { id: 3, name: "Denim Jacket", price: 59.99, image: "/images/placeholder.jpg" },
 ];
 
 export default function FeaturedProducts() {

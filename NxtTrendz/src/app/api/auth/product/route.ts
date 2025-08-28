@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
       description,
       totalReviews,
       availability,
+      seller,
     } = body;
     console.log(style, description, totalReviews, availability);
 
@@ -64,7 +65,8 @@ export async function POST(req: NextRequest) {
       !style ||
       !description ||
       !totalReviews ||
-      !availability
+      !availability ||
+      !seller
     ) {
       return NextResponse.json(
         { success: false, message: "All Details are Required" },
@@ -112,9 +114,10 @@ export async function POST(req: NextRequest) {
       description,
       totalReviews,
       availability,
+      seller,
       image: { url, fileId, thumbnailUrl },
     });
-    revalidatePath("/product");
+    revalidatePath("/my-products");
     return NextResponse.json(
       { success: true, message: "Product Added Succesfully", product },
       { status: 201 }

@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 const categories = [
-  { name: "Men", image: "/images/men.png", href: "/category/men" },
-  { name: "Women", image: "/images/women.png", href: "/category/women" },
-  { name: "Kids", image: "/images/kids.png", href: "/category/kids" },
+  { name: "Men", image: "/images/home-img.png", href: "/product" },
+  { name: "Women", image: "/images/home-img.png", href: "/product" },
+  { name: "Kids", image: "/images/home-img.png", href: "/product" },
   {
     name: "Accessories",
-    image: "/images/accessories.png",
-    href: "/category/accessories",
+    image: "/images/home-img.png",
+    href: "/product",
   },
 ];
 
