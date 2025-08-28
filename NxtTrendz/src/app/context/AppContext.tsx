@@ -8,6 +8,7 @@ type User = {
   id: string;
   email: string;
   name: string;
+  role: string;
 };
 
 type SortBy = "PRICE_HIGH" | "PRICE_LOW" | null;
@@ -20,7 +21,7 @@ type AppContextType = {
   refreshSession: () => Promise<void>; // function to manually refresh session
   filteredProducts: Product[] | [];
   products: Product[] | [];
-  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]> >;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   sortBy: SortBy;
   setSortBy: (value: SortBy) => void;

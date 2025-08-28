@@ -8,16 +8,29 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const method = request.method;
 
-  let userRole = "user";
+  let userRole: "user" | "seller" | "admin" | null = null;
 
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
         role: string;
       };
-      userRole = decoded.role;
+      userRole = decoded.role as "user" | "seller" | "admin";
     } catch (err) {
       console.error("Invalid token:", err);
+    }
+  }
+
+  // Role-based redirect on login
+  if (pathname.startsWith("/login") && userRole) {
+    if (userRole === "user") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (userRole === "seller") {
+      return NextResponse.redirect(new URL("/seller", request.url));
+    }
+    if (userRole === "admin") {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
   }
 
@@ -54,6 +67,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/cart/:path*"],
+  matcher: ["/cart/:path*", "/login"],
   // matcher: ["/cart/:path*", "/api/product/:path*", "/admin/product-upload/:path*"],
 };

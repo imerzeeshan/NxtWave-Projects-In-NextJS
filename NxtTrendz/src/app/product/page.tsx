@@ -62,7 +62,7 @@ const ProductsPage = () => {
                 <p className="text-sm text-gray-500">by {product.brand}</p>
                 <div className="flex justify-between mt-2">
                   <p className="text-gray-800 text-xl font-semibold ">
-                    ${product.price}
+                    Rs {product.price}/-
                   </p>
                   <p className="bg-blue-600 text-white px-2 py-1 rounded flex items-center gap-2">
                     <Star size={20} /> {product.rating}

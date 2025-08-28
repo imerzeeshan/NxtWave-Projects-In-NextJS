@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
 
     const user = await User.findOne({ email });
-    // console.log(user);
+    console.log(user);
     if (!user) {
       return NextResponse.json(
         { success: false, error: "User does not exist" },
