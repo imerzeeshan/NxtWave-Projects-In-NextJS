@@ -42,16 +42,16 @@ const CartPage = () => {
   };
 
   const handleQuantityChange = (
-    productId: string,
+    product: string,
     action: "increase" | "decrease" | "remove"
   ) => {
     setCartItems((prev) => {
       if (action === "remove") {
-        return prev.filter((item) => item.productDetails._id !== productId);
+        return prev.filter((item) => item.productDetails._id !== product);
       }
 
       return prev.map((item) => {
-        if (item.productDetails._id === productId) {
+        if (item.productDetails._id === product) {
           if (action === "increase") {
             return { ...item, productCount: item.productCount + 1 };
           }

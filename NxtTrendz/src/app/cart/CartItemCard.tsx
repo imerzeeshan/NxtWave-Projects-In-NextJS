@@ -10,7 +10,7 @@ const CartItemCard = ({
 }: {
   item: Items;
   onQuantityChange: (
-    productId: string,
+    product: string,
     action: "increase" | "decrease" | "remove"
   ) => void;
 }) => {
@@ -23,7 +23,7 @@ const CartItemCard = ({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        productId: item.productDetails._id,
+        product: item.productDetails._id,
         userId: user?.id,
         action,
       }),

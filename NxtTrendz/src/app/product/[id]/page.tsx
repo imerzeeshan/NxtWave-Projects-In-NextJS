@@ -42,7 +42,7 @@ const ProductDetailsPage = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        productId: productDetails?.product._id,
+        product: productDetails?.product._id,
         title: productDetails?.product.title,
         brand: productDetails?.product.brand,
         productCount: item,

@@ -13,10 +13,10 @@ interface CustomJwtPayload extends jwt.JwtPayload {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { productId, userId } = body;
-    // console.log(productId);
+    const { product, userId } = body;
+    console.log(product);
 
-    if (!productId || !userId) {
+    if (!product || !userId) {
       return NextResponse.json(
         {
           success: false,
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     await connectToDatabase();
     const updatedCartItem = await Cart.findOneAndUpdate(
-      { userId, productId },
+      { userId, product },
       { $inc: { productCount: 1 } },
       { new: true, upsert: true }
     );
@@ -116,22 +116,22 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { productId, userId, action } = await req.json();
+    const { product, userId, action } = await req.json();
     await connectToDatabase();
     if (action === "increase") {
       await Cart.findOneAndUpdate(
-        { productId, userId },
+        { product, userId },
         { $inc: { productCount: 1 } },
         { new: true }
       );
     } else if (action === "decrease") {
       await Cart.findOneAndUpdate(
-        { productId, userId, productCount: { $gt: 1 } },
+        { product, userId, productCount: { $gt: 1 } },
         { $inc: { productCount: -1 } },
         { new: true }
       );
     } else {
-      await Cart.findOneAndDelete({ productId, userId });
+      await Cart.findOneAndDelete({ product, userId });
     }
     revalidatePath("/cart");
     return NextResponse.json({ success: true }, { status: 200 });

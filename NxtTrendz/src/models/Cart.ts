@@ -2,7 +2,7 @@ import mongoose, { Schema, models, model } from "mongoose";
 
 export interface NCart {
   _id: mongoose.Types.ObjectId;
-  productId: mongoose.Types.ObjectId;
+  product: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   productCount: number;
   createdAt?: Date;
@@ -11,7 +11,7 @@ export interface NCart {
 
 const userCartSchema = new Schema(
   {
-    productId: {
+    product: {
       type: Schema.Types.ObjectId,
       ref: "Product",
       required: true,
@@ -23,7 +23,7 @@ const userCartSchema = new Schema(
 );
 
 // Optional: prevent same product multiple times for same user
-userCartSchema.index({ userId: 1, productId: 1 }, { unique: true });
+userCartSchema.index({ userId: 1, product: 1 }, { unique: true });
 
 const Cart = models?.Cart || model<NCart>("Cart", userCartSchema);
 

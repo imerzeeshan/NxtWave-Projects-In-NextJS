@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import Product from "@/models/Product";
 
-interface CustomJwtPayload extends jwt.JwtPayload {
+export interface CustomJwtPayload extends jwt.JwtPayload {
   id: string;
 }
 
