@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { CustomJwtPayload } from "../../seller/product/route";
 import Cart from "@/models/Cart";
 import { connectToDatabase } from "@/lib/db";
+import Order from "@/models/Orders";
 
 export async function POST(req: Request) {
   try {
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
     await connectToDatabase();
     const cartItems = await Cart.find({ userId: decode.id })
       .populate("product")
-      .populate("userId","name email")
+      .populate("userId", "name email")
       .lean();
 
     //   .populate("userId", "name email");
@@ -38,45 +39,45 @@ export async function POST(req: Request) {
 
     // const { items, shippingAddress, payment } = body;
 
-    // if (!decode.id || !items || items.length === 0) {
-    //   return NextResponse.json(
-    //     { error: "User and items are required" },
-    //     { status: 400 }
-    //   );
-    // }
+    if (!decode.id || !cartItems || cartItems.length === 0) {
+      return NextResponse.json(
+        { error: "User and items are required" },
+        { status: 400 }
+      );
+    }
 
     // ✅ Build order items with price + subtotal from product data
-    // const populatedItems = await Promise.all(
-    //   items.map(async (item: { product: string; quantity: number }) => {
-    //     const product = await Product.findById(item.product);
-    //     if (!product) {
-    //       throw new Error(`Product not found: ${item.product}`);
-    //     }
-    //     const price = product.price;
-    //     const subtotal = price * item.quantity;
-    //     return {
-    //       product: new mongoose.Types.ObjectId(item.product),
-    //       quantity: item.quantity,
-    //       price,
-    //       subtotal,
-    //     };
-    //   })
-    // );
+    const populatedItems = await Promise.all(
+      cartItems.map(async (item) => {
+        const product = await Product.findById(item.product);
+        if (!product) {
+          throw new Error(`Product not found: ${item.product}`);
+        }
+        const price = product.price;
+        const subtotal = price * item.quantity;
+        return {
+          product: new mongoose.Types.ObjectId(item.product),
+          quantity: item.quantity,
+          price,
+          subtotal,
+        };
+      })
+    );
 
     // ✅ Calculate total amount
-    // const totalAmount = populatedItems.reduce(
-    //   (sum, item) => sum + item.subtotal,
-    //   0
-    // );
+    const totalAmount = populatedItems.reduce(
+      (sum, item) => sum + item.subtotal,
+      0
+    );
 
     // ✅ Create new order
-    // const newOrder = await Order.create({
-    //   user: new mongoose.Types.ObjectId(decode.id),
-    //   items: populatedItems,
-    //   totalAmount,
-    //   shippingAddress,
-    //   payment,
-    // });
+    const newOrder = await Order.create({
+      user: new mongoose.Types.ObjectId(decode.id),
+      items: populatedItems,
+      totalAmount,
+      // shippingAddress,
+      // payment,
+    });
 
     // await newOrder.save();
 
