@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CartItemCard from "./CartItemCard";
 import { useAppContext } from "../context/AppContext";
+import { useRouter } from "next/navigation";
 
 type Img = {
   url: string;
@@ -23,6 +24,7 @@ export type Items = {
 
 const CartPage = () => {
   const { user } = useAppContext();
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<Items[] | []>([]);
   const [totalAmount, setTotalAmount] = useState(0);
   console.log(totalAmount);
@@ -76,6 +78,17 @@ const CartPage = () => {
     }
   };
 
+  const handleOrder = async () => {
+    const res = await fetch("/api/user/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (res.ok) {
+      console.log(await res.json());
+      router.push("/order");
+    }
+  };
+
   useEffect(() => {
     const total = cartItems.reduce(
       (sum, item) => sum + item.productDetails.price * item.productCount,
@@ -107,6 +120,12 @@ const CartPage = () => {
       </div>
       <div className="text-right mt-6">
         <p className="text-xl font-bold">Total: Rs {totalAmount}/-</p>
+        <button
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white cursor-pointer my-5 "
+          onClick={handleOrder}
+        >
+          Order Now
+        </button>
       </div>
     </div>
   ) : (

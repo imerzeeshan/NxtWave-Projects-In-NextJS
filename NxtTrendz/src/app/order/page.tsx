@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import OrderDetails from "./OrderDetails";
+import { Order } from "@/types/types";
 
 const OrdersPage = () => {
-  const [myOrders, setMyOrders] = useState([]);
+  const [myOrders, setMyOrders] = useState<Order[] | []>([]);
 
   const getAllOrders = async () => {
     const res = await fetch("/api/user/orders", {
@@ -24,8 +25,8 @@ const OrdersPage = () => {
   return (
     <div className="mt-25">
       <h1>My Orders</h1>
-      <div>
-        {myOrders?.map((order: any) => (
+      <div className="flex flex-col gap-15">
+        {myOrders?.map((order) => (
           <div key={order._id}>
             <OrderDetails orderDetails={order} />
           </div>
