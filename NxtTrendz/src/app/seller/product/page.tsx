@@ -4,9 +4,10 @@ import FilterGroup from "./FilterGroup";
 import ProductHeader from "./ProductHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Product } from "@/types/types";
 
 const SellerProductsPage = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   console.log(products);
   const getAllProducts = async () => {
     const res = await fetch("/api/seller/product", {
