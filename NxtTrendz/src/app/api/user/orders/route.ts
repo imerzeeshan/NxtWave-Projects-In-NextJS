@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import Product from "@/models/Product";
 import mongoose from "mongoose";
 import { cookies } from "next/headers";
@@ -16,7 +16,7 @@ interface PopulatedCartItems {
   productCount: number;
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     // const body = await req.json();
 
@@ -128,7 +128,8 @@ export async function GET() {
       .populate("items.product")
       .sort({
         createdAt: -1,
-      }).lean();
+      })
+      .lean();
 
     return NextResponse.json({ success: true, orders }, { status: 200 });
   } catch (error) {
