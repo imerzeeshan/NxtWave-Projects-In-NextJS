@@ -2,15 +2,15 @@ import { useAppContext } from "../context/AppContext";
 
 const CartItemCardButton = ({
   count,
-  productId,
+  product,
   userId,
   onQuantityChange,
 }: {
   count: number;
-  productId: string;
+  product: string;
   userId: string;
   onQuantityChange: (
-    productId: string,
+    product: string,
     action: "increase" | "decrease"
   ) => void;
 }) => {
@@ -18,11 +18,11 @@ const CartItemCardButton = ({
   //   console.log(productId, user);
 
   const handleIncrease = async (action: "increase" | "decrease") => {
-    onQuantityChange(productId, action);
+    onQuantityChange(product, action);
     const res = await fetch("/api/auth/cart", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, userId, action }),
+      body: JSON.stringify({ product, userId, action }),
     });
     const data = await res.json();
     console.log(data);

@@ -61,7 +61,7 @@ const CartItemCard = ({
       </div>
       <CartItemCardButton
         count={item.productCount}
-        productId={item.productDetails._id}
+        product={item.productDetails._id}
         userId={user?.id || ""}
         onQuantityChange={onQuantityChange}
       />

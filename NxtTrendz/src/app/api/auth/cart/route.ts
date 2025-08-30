@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 
-interface CustomJwtPayload extends jwt.JwtPayload {
+export interface CustomJwtPayload extends jwt.JwtPayload {
   id: string;
 }
 
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { product, userId } = body;
-    console.log(product);
+    console.log(typeof product);
 
     if (!product || !userId) {
       return NextResponse.json(
@@ -28,7 +28,10 @@ export async function POST(req: NextRequest) {
 
     await connectToDatabase();
     const updatedCartItem = await Cart.findOneAndUpdate(
-      { userId, product },
+      {
+        userId: new mongoose.Types.ObjectId(userId),
+        product: new mongoose.Types.ObjectId(product),
+      },
       { $inc: { productCount: 1 } },
       { new: true, upsert: true }
     );
@@ -77,7 +80,7 @@ export async function GET() {
       {
         $lookup: {
           from: "products",
-          localField: "productId",
+          localField: "product",
           foreignField: "_id",
           as: "productDetails",
         },

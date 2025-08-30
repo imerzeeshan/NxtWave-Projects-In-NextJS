@@ -3,7 +3,7 @@ import { NProduct } from "./Product"; // import your product interface
 
 // Single item inside an order
 export interface IOrderItem {
-  product: mongoose.Types.ObjectId | NProduct;
+  product: mongoose.Types.ObjectId;
   quantity: number;
   price: number; // snapshot of price at purchase
   subtotal: number;
@@ -66,6 +66,14 @@ const OrderSchema = new Schema<IOrder>(
   },
   { timestamps: true }
 );
+
+//! calc-auto total amount -  it's work only on "save" 
+// OrderSchema.pre("save", function (next) {
+//   if (this.items && this.items.length > 0) {
+//     this.totalAmount = this.items.reduce((sum, item) => sum + item.subtotal, 0);
+//   }
+//   next();
+// });
 
 const Order = models?.Order<IOrder> || model<IOrder>("Order", OrderSchema);
 
