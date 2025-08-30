@@ -22,7 +22,11 @@ export async function POST(req: NextRequest) {
 
     const cookie = await cookies();
     const token = cookie.get("token")?.value;
-    if (!token) return null;
+    if (!token)
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
     const decode = jwt.verify(
       token,
       process.env.JWT_TOKEN_SECRET!
