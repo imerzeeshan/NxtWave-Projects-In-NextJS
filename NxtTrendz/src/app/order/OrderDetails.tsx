@@ -8,7 +8,7 @@ const OrderDetails = ({ orderDetails }: { orderDetails: Order }) => {
       <h2>Total Amount: {orderDetails.totalAmount}</h2>
       <p>Status: {orderDetails.status}</p>
       <div className="bg-red-200 flex gap-5">
-        {orderDetails.items.map((item: any) => (
+        {orderDetails.items.map((item) => (
           <OrderItemCard key={item._id} itemDetails={item} />
         ))}
       </div>
