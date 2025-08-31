@@ -23,7 +23,11 @@ const ProfilePage = () => {
     }
   };
 
-  const handleDeleteImage = async (fileId: string) => {
+  const handleDeleteImage = async (fileId?: string) => {
+    if (!fileId) {
+      console.warn("No fileId provided, skipping delete");
+      return;
+    }
     setIsRemoving(true);
     try {
       const deleteImgRes = await fetch("/api/auth/imagekit-auth", {
@@ -150,7 +154,7 @@ const ProfilePage = () => {
             <div className="flex gap-5 mt-5">
               {user?.image?.fileId && (
                 <button
-                  onClick={() => handleDeleteImage(user?.image?.fileId!)}
+                  onClick={() => handleDeleteImage(user?.image?.fileId)}
                   disabled={isRemoving || isSaving}
                   className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer 
               transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"

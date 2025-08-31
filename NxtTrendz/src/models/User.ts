@@ -2,7 +2,7 @@ import { Image } from "@/types/types";
 import bcrypt from "bcryptjs";
 import mongoose, { model, models, Schema } from "mongoose";
 
-export type UserRole = "user" | "seller" | "admin";
+export type UserRole = "user" | "seller" | "admin" | "requested";
 
 export interface NUser {
   name: string;
@@ -22,7 +22,7 @@ const userSchema = new Schema<NUser>(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["user", "seller", "admin"], // ✅ only allow these values
+      enum: ["user", "seller", "admin", "requested"], // ✅ only allow these values
       default: "user", // ✅ default is normal user
     },
     image: {
