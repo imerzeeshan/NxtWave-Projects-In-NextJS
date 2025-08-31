@@ -92,12 +92,28 @@ const ProfilePage = () => {
     }
   };
 
+  const handleBecomeSeller = async () => {
+    try {
+      const res = await fetch("/api/user/user-data", {
+        method: "PATCH",
+      });
+      if (res.ok) {
+        alert("Requested Successfully For Becoming a Seller");
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   return (
     <div className="pt-25 bg-gray-900 min-h-screen text-white">
       <h1>Profile Page</h1>
       <div className="flex justify-between">
         <Link href={"/order"}>My Orders</Link>
-        <button className="px-3 py-2 bg-gray-600/60 rounded cursor-pointer">
+        <button
+          onClick={handleBecomeSeller}
+          className="px-3 py-2 bg-gray-600/60 rounded cursor-pointer"
+        >
           Become Seller
         </button>
 
