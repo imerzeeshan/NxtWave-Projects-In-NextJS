@@ -12,6 +12,15 @@
 //   availability: string;
 // };
 
+export interface User {
+  name: string;
+  email: string;
+  role: string;
+  image?: Image;
+  id: string;
+  createdAt?: Date;
+}
+
 export interface Image {
   fileId: string;
   url: string;

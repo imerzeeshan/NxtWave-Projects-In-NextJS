@@ -61,7 +61,7 @@ const ProductFormDetails = () => {
           description,
           totalReviews,
           availability,
-          seller: user?._id,
+          seller: user?.id,
         }),
       });
 
