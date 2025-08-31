@@ -3,19 +3,13 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Product } from "../../types/types";
 import { ImageKitProvider } from "@imagekit/next";
-
-type User = {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-};
+import { NUser } from "@/models/User";
 
 type SortBy = "PRICE_HIGH" | "PRICE_LOW" | null;
 
 type AppContextType = {
   router: ReturnType<typeof useRouter>;
-  user: User | null;
+  user: NUser | null;
   loggedIn: boolean;
   loading: boolean;
   refreshSession: () => Promise<void>; // function to manually refresh session
@@ -32,7 +26,7 @@ const AppContext = createContext<AppContextType | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const urlEndPoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<NUser | null>(null);
   const [sortBy, setSortBy] = useState<SortBy>(null);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[] | []>([]);

@@ -138,7 +138,7 @@ const ProfilePage = () => {
               className="rounded-full"
             />
             <div className="absolute top-24 bg-gray-50/40 rounded-full p-3 cursor-pointer">
-              <Pencil className="text-white  h-6 w-6" />
+              <Pencil className="text-white cursor-pointer h-6 w-6" />
             </div>
             <input
               type="file"
@@ -148,14 +148,16 @@ const ProfilePage = () => {
               className="cursor-pointer top-24 z-50 absolute h-12 w-12 opacity-0 bg-white rounded-full"
             />
             <div className="flex gap-5 mt-5">
-              <button
-                onClick={() => handleDeleteImage(user?.image?.fileId)}
-                disabled={isRemoving || isSaving}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer 
+              {user?.image?.fileId && (
+                <button
+                  onClick={() => handleDeleteImage(user?.image?.fileId!)}
+                  disabled={isRemoving || isSaving}
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer 
               transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
-              >
-                {isRemoving ? "Removing..." : "Remove"}
-              </button>
+                >
+                  {isRemoving ? "Removing..." : "Remove"}
+                </button>
+              )}
               <button
                 onClick={handleSavefile}
                 disabled={isRemoving || isSaving}
