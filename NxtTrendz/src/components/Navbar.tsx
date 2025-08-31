@@ -119,6 +119,13 @@ export default function Navbar() {
                 Cart
               </Link>
             </li>
+            {loggedIn && (
+              <li>
+                <Link href="/profile" className={linkClasses("/profile")}>
+                  Profile
+                </Link>
+              </li>
+            )}
           </ul>
           {!loggedIn ? (
             <div className="flex gap-5">

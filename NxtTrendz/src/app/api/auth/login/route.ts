@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       name: user.name,
       email: user.email,
       role: user.role,
+      image: user.image,
     };
 
     const token = jwt.sign(payload, process.env.JWT_TOKEN_SECRET!, {

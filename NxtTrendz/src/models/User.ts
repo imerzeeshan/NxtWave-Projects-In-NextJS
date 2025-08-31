@@ -1,3 +1,4 @@
+import { Image } from "@/types/types";
 import bcrypt from "bcryptjs";
 import mongoose, { model, models, Schema } from "mongoose";
 
@@ -8,6 +9,7 @@ export interface NUser {
   email: string;
   password: string;
   role: UserRole;
+  image?: Image;
   _id: mongoose.Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
@@ -22,6 +24,11 @@ const userSchema = new Schema<NUser>(
       type: String,
       enum: ["user", "seller", "admin"], // ✅ only allow these values
       default: "user", // ✅ default is normal user
+    },
+    image: {
+      url: { type: String },
+      thumbnailUrl: { type: String },
+      fileId: { type: String },
     },
   },
   { timestamps: true }
