@@ -14,6 +14,8 @@ const ProfilePage = () => {
   const [isRemoving, setIsRemoving] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
+  console.log(user);
+
   const handlefile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -96,10 +98,13 @@ const ProfilePage = () => {
     try {
       const res = await fetch("/api/user/user-data", {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: "requested" }),
       });
       if (res.ok) {
         alert("Requested Successfully For Becoming a Seller");
       }
+      console.log(await res.json());
     } catch (error) {
       console.warn(error);
     }
@@ -129,7 +134,7 @@ const ProfilePage = () => {
             height={200}
             width={200}
             priority
-            className="rounded-full"
+            className="rounded-full w-[200px] h-[200px]"
           />
           <div className="bg-amber-50/20 rounded-full p-2 absolute flex top-20 left-20 cursor-pointer">
             <Pencil
@@ -146,7 +151,10 @@ const ProfilePage = () => {
         <div className="h-screen w-screen bg-gray-500/50 absolute top-0 pt-25">
           <div className="bg-gray-300/80 relative text-black w-xl h-[300px] flex flex-col items-center mx-auto justify-center">
             <X
-              onClick={() => setChangeProfile(false)}
+              onClick={() => {
+                setPreview("");
+                setChangeProfile(false);
+              }}
               className="absolute right-2 top-2 bg-white rounded-full text-gray-500 cursor-pointer"
             />
             <Image
@@ -155,7 +163,7 @@ const ProfilePage = () => {
               height={200}
               width={200}
               priority
-              className="rounded-full"
+              className="rounded-full w-[200px] h-[200px]"
             />
             <div className="absolute top-24 bg-gray-50/40 rounded-full p-3 cursor-pointer">
               <Pencil className="text-white cursor-pointer h-6 w-6" />

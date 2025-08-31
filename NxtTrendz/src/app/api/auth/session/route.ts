@@ -18,7 +18,20 @@ export async function GET() {
     ) as CustomJwtPayload;
     const user = await User.findById(decode.id).select("-password");
     console.log(decode, "session backend");
-    return NextResponse.json({ loggedIn: true, user }, { status: 200 });
+    return NextResponse.json(
+      {
+        loggedIn: true,
+        user: {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt,
+          role: user.role,
+          image: user.image,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json({ loggedIn: false }, { status: 500 });
   }

@@ -62,7 +62,7 @@ const CartItemCard = ({
       <CartItemCardButton
         count={item.productCount}
         product={item.productDetails._id}
-        userId={user?._id.toString() || ""}
+        userId={user?._id?.toString() || ""}
         onQuantityChange={onQuantityChange}
       />
       <div className="flex items-center justify-end gap-5">

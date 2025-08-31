@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { product, userId } = body;
-    console.log(typeof product);
+    console.log(userId);
 
     if (!product || !userId) {
       return NextResponse.json(
