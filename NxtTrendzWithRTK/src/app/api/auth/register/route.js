@@ -1,0 +1,58 @@
+import { connectToDatabase } from "@/lib/db";
+import User from "@/models/User";
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+  try {
+    const formData = await req.formData();
+    const { name, email, password, confirmPassword } =
+      Object.fromEntries(formData);
+
+    if (password !== confirmPassword) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Password is Mismatched!",
+        },
+        { status: 400 }
+      );
+    }
+
+    console.log(name, email, password, confirmPassword);
+
+    await connectToDatabase();
+
+    const isUserExist = await User.findOne({ email });
+    console.log({ isUserExist });
+
+    if (isUserExist) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User Already Exist!",
+        },
+        { status: 401 }
+      );
+    }
+
+    await User.create({ name, email, password, role: "user" });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "User registered successfully!",
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Registration Failed!",
+        error,
+      },
+      { status: 500 }
+    );
+  }
+}
