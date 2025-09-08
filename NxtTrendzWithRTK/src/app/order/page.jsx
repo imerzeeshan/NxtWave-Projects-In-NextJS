@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import OrderDetails from "./OrderDetails";
-import { Order } from "@/types/types";
 
 const OrdersPage = () => {
   const [myOrders, setMyOrders] = useState([]);
