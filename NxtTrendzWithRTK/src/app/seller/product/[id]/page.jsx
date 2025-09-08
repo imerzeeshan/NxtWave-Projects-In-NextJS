@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Product } from "@/types/types";
 import { Star } from "lucide-react";
 import Link from "next/link";
 import { useAppContext } from "@/app/context/AppContext";

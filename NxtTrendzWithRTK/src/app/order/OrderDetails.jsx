@@ -1,6 +1,5 @@
 import React from "react";
 import OrderItemCard from "./OrderItemCard";
-import { Order } from "@/types/types";
 
 const OrderDetails = ({ orderDetails }) => {
   return (
