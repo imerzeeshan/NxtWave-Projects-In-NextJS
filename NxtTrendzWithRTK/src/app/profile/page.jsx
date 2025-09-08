@@ -6,6 +6,7 @@ import { Pencil, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import RemoveImageButton from "./RemoveImageButton";
 import SaveImageButton from "./SaveImageButton";
+import Loading from "../loading";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -14,7 +15,7 @@ const ProfilePage = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
 
-  console.log(user);
+  console.log({ user });
 
   const handlefile = (e) => {
     const file = e.target.files?.[0];
@@ -41,23 +42,32 @@ const ProfilePage = () => {
     }
   };
 
-  return (
-    <div className="pt-25 bg-gray-900 min-h-screen text-white">
-      <h1>Profile Page</h1>
-      <div className="flex justify-between">
-        <Link href={"/order"}>My Orders</Link>
-        <button
-          onClick={handleBecomeSeller}
-          className="px-3 py-2 bg-gray-600/60 rounded cursor-pointer"
-        >
-          Become Seller
-        </button>
+  if (!user) return <Loading />;
 
-        <button className="flex justify-between items-center px-3 py-2 bg-gray-600/60 rounded">
-          Edit Profile <Pencil />
+  return (
+    <div className="max-w-[90%] xl:max-w-[80%] mx-auto pt-16 bg-gray-900 min-h-screen text-white px-5">
+      <h1 className="text-2xl font-semibold p-2 pl-6">Profile</h1>
+      <div className="flex flex-col items-start mb-2">
+        <Link
+          href={"/order"}
+          className="text-xs font-bold hover:bg-gray-100/20 px-1 py-1"
+        >
+          My Orders
+        </Link>
+        {user.role === "user" && (
+          <button
+            onClick={handleBecomeSeller}
+            className=" text-xs font-bold cursor-pointer hover:bg-gray-100/20 px-1 py-1"
+          >
+            Become Seller
+          </button>
+        )}
+
+        <button className="text-xs cursor-pointer font-bold hover:bg-gray-100/20 px-1 py-1">
+          Edit Profile
         </button>
       </div>
-      <div className="bg-red-500">
+      <div className="bg-gray-500/20 p-5 rounded flex flex-col md:flex-row gap-5">
         <div className="relative">
           <Image
             src={user?.image?.url || "/images/placeholder.jpg"}
@@ -74,9 +84,33 @@ const ProfilePage = () => {
             />
           </div>
         </div>
-        <h1>{user?.name}</h1>
-        <p>{user?.email}</p>
-        <p>{user?.role}</p>
+        <div>
+          <h1 className="text-2xl font-semibold">{user?.name}</h1>
+          <p className="font-semibold">Email: {user?.email}</p>
+          <p className="">Phone: {user?.phone}</p>
+          <div className="flex gap-2 items-center">
+            Role:
+            {user.role === "requested" ? (
+              <p className="text-xs font-bold">
+                Your seller request is pending approval.
+              </p>
+            ) : (
+              <p>{user.role}</p>
+            )}
+          </div>
+          <p>
+            Member Since:{" "}
+            {new Date(user.createdAt).toLocaleDateString("en-IN", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        </div>
+        <div>
+          <p>Bio: </p>
+          <p>Address: </p>
+        </div>
       </div>
       {changeProfile && (
         <div className="h-screen w-screen bg-gray-500/50 absolute top-0 pt-25">

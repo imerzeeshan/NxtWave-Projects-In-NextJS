@@ -1,3 +1,4 @@
+// components/orders/OrdersPage.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,19 +9,11 @@ import Loading from "../loading";
 const OrdersPage = () => {
   const [myOrders, setMyOrders] = useState([]);
 
-  const [getAllOrders, { isLoading, isError, error, isSuccess, data }] =
-    useGetAllOrdersMutation();
+  const [getAllOrders, { isLoading }] = useGetAllOrdersMutation();
 
   const handleGetAllOrders = async () => {
-    // const res = await fetch("/api/user/orders", {
-    //   method: "GET",
-    //   headers: { "Content-Type": "application/json" },
-    // });
     const { data } = await getAllOrders();
-    console.log(data);
-
-    if (data.success) {
-      // const { orders } = await res.json();
+    if (data?.success) {
       setMyOrders(data.orders);
     }
   };
@@ -29,17 +22,19 @@ const OrdersPage = () => {
     handleGetAllOrders();
   }, []);
 
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <div className="mt-16">
-      <h1 className="p-6 text-2xl font-semibold">My Orders</h1>
-      <div className="flex flex-col gap-15">
-        {myOrders?.map((order) => (
-          <div key={order._id}>
-            <OrderDetails orderDetails={order} />
-          </div>
-        ))}
+  if (isLoading) return <Loading />;
+
+  return (
+    <div className="mt-16 max-w-6xl mx-auto px-4">
+      <h1 className="text-3xl font-bold mb-8">My Orders</h1>
+      <div className="space-y-8">
+        {myOrders.length > 0 ? (
+          myOrders.map((order) => (
+            <OrderDetails key={order._id} orderDetails={order} />
+          ))
+        ) : (
+          <p className="text-gray-400">You have no orders yet.</p>
+        )}
       </div>
     </div>
   );
