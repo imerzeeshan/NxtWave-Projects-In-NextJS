@@ -6,6 +6,7 @@ import { productApiSlice } from "@/features/productApiSlice";
 import { cartApiSlice } from "@/features/cartApiSlice";
 import { orderApiSlice } from "@/features/orderApiSlice";
 import { imageKitApiSlice } from "@/features/imageKitApiSlice";
+import { profileApiSlice } from "@/features/profileApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [cartApiSlice.reducerPath]: cartApiSlice.reducer,
     [orderApiSlice.reducerPath]: orderApiSlice.reducer,
     [imageKitApiSlice.reducerPath]: imageKitApiSlice.reducer,
+    [profileApiSlice.reducerPath]: profileApiSlice.reducer,
     products: products,
   },
   middleware: (getDefaultMiddleware) =>
@@ -23,6 +25,7 @@ export const store = configureStore({
       productApiSlice.middleware,
       cartApiSlice.middleware,
       orderApiSlice.middleware,
-      imageKitApiSlice.middleware
+      imageKitApiSlice.middleware,
+      profileApiSlice.middleware
     ),
 });

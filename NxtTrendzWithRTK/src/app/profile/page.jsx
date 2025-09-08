@@ -3,23 +3,16 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import { Pencil, X } from "lucide-react";
-import { upload } from "@imagekit/next";
-import { useDispatch, useSelector } from "react-redux";
-import { useDeleteImageKitImageMutation } from "@/features/imageKitApiSlice";
-import { setCredentials, updateCredentials } from "@/features/authSlice";
+import { useSelector } from "react-redux";
+import RemoveImageButton from "./RemoveImageButton";
+import SaveImageButton from "./SaveImageButton";
 
 const ProfilePage = () => {
-  // const { refreshSession } = useAppContext();
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
-  const [deleteImageKitImage, { isLoading }] = useDeleteImageKitImageMutation();
 
   const [changeProfile, setChangeProfile] = useState(false);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
-  const [isRemoving, setIsRemoving] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   console.log(user);
 
@@ -29,83 +22,6 @@ const ProfilePage = () => {
       const previewUrl = URL.createObjectURL(file);
       setPreview(previewUrl);
       setFile(file);
-    }
-  };
-
-  const handleDeleteImage = async (fileId) => {
-    if (!fileId) {
-      console.warn("No fileId provided, skipping delete");
-      return;
-    }
-    setIsRemoving(true);
-    try {
-      const res = await deleteImageKitImage({ fileId }).unwrap();
-      console.log(res);
-
-      if (res.success) {
-        const res = await fetch("/api/user/profile", {
-          method: "PUT",
-        });
-        setPreview("");
-        const data = await res.json();
-        console.log(data);
-
-        // await refreshSession();
-        dispatch(updateCredentials(data));
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsRemoving(false);
-      setChangeProfile(false);
-    }
-  };
-
-  const handleSavefile = async () => {
-    setIsSaving(true);
-    try {
-      if (!file) {
-        console.error("No file selected");
-        return;
-      }
-      const authRes = await fetch("/api/auth/imagekit-auth");
-      const auth = await authRes.json();
-
-      const uploadImgRes = await upload({
-        file,
-        fileName: file.name,
-        publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
-        signature: auth.signature,
-        expire: auth.expire,
-        token: auth.token,
-      });
-
-      const { url, thumbnailUrl, fileId } = uploadImgRes;
-      if (!url || !thumbnailUrl || !fileId) {
-        return;
-      }
-
-      const response = await fetch("/api/user/profile", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileId, url, thumbnailUrl }),
-      });
-      console.log(response);
-
-      if (!response.ok) {
-        handleDeleteImage(fileId);
-      }
-      // const data = await updateRes.json();
-      const data = await response.json();
-      console.log(data);
-
-      // await refreshSession();
-      dispatch(updateCredentials(data));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSaving(false);
-      setChangeProfile(false);
     }
   };
 
@@ -192,23 +108,16 @@ const ProfilePage = () => {
             />
             <div className="flex gap-5 mt-5">
               {user?.image?.fileId && (
-                <button
-                  onClick={() => handleDeleteImage(user?.image?.fileId)}
-                  disabled={isRemoving || isSaving}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer 
-              transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
-                >
-                  {isRemoving ? "Removing..." : "Remove"}
-                </button>
+                <RemoveImageButton
+                  fileId={user?.image?.fileId}
+                  setChangeProfile={setChangeProfile}
+                  setPreview={setPreview}
+                />
               )}
-              <button
-                onClick={handleSavefile}
-                disabled={isRemoving || isSaving}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer 
-              transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
-              >
-                {isSaving ? "Saving..." : "Save"}
-              </button>
+              <SaveImageButton
+                setChangeProfile={setChangeProfile}
+                file={file}
+              />
             </div>
           </div>
         </div>

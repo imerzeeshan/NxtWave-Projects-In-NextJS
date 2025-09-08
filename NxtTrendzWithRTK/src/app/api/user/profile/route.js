@@ -26,8 +26,8 @@ export async function GET() {
 
 export async function PATCH(req) {
   try {
-    const { url, thumbnailUrl, fileId } = await req.json();
-    console.log(url, thumbnailUrl, fileId);
+    const { url, thumbnailUrl, fileId, action } = await req.json();
+    console.log(url, thumbnailUrl, fileId, action);
 
     const cookie = await cookies();
     const token = cookie.get("token")?.value;
@@ -41,69 +41,49 @@ export async function PATCH(req) {
 
     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
+    let user;
+
     await connectToDatabase();
-    const user = await User.findByIdAndUpdate(
-      decode.id,
-      {
-        image: { url, fileId, thumbnailUrl },
-      },
-      { new: true }
-    ).select("-password");
-
-    console.log(user);
-
-    return NextResponse.json(
-      {
-        success: true,
-        user,
-        message: "Profile Image has been changed",
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Internal Server Error",
-      },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PUT() {
-  try {
-    const cookie = await cookies();
-    const token = cookie.get("token")?.value;
-
-    if (!token) {
+    if (action === "upload") {
+      user = await User.findByIdAndUpdate(
+        decode.id,
+        {
+          image: { url, fileId, thumbnailUrl },
+        },
+        { new: true }
+      ).select("-password");
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        {
+          success: true,
+          user,
+          message: "Profile Image has been changed",
+        },
+        { status: 200 }
       );
     }
 
-    const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+    if (action === "remove") {
+      user = await User.findByIdAndUpdate(
+        decode.id,
+        {
+          image: null,
+        },
+        { new: true }
+      ).select("-password");
+      return NextResponse.json(
+        {
+          success: true,
+          user,
+          message: "Profile Image has been changed",
+        },
+        { status: 200 }
+      );
+    }
 
-    await connectToDatabase();
-    const user = await User.findByIdAndUpdate(
-      decode.id,
-      {
-        image: null,
-      },
-      { new: true }
-    ).select("-password");
-
-    console.log(user, "profile route");
-
+    console.log({ user });
     return NextResponse.json(
-      {
-        success: true,
-        user,
-        message: "Profile Image has been removed",
-      },
-      { status: 200 }
+      { success: false, message: "Invalid action" },
+      { status: 400 }
     );
   } catch (error) {
     console.error(error);
@@ -116,3 +96,48 @@ export async function PUT() {
     );
   }
 }
+
+// export async function PUT() {
+//   try {
+//     const cookie = await cookies();
+//     const token = cookie.get("token")?.value;
+
+//     if (!token) {
+//       return NextResponse.json(
+//         { success: false, message: "Unauthorized" },
+//         { status: 401 }
+//       );
+//     }
+
+//     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+
+//     await connectToDatabase();
+//     const user = await User.findByIdAndUpdate(
+//       decode.id,
+//       {
+//         image: null,
+//       },
+//       { new: true }
+//     ).select("-password");
+
+//     console.log(user, "profile route");
+
+//     return NextResponse.json(
+//       {
+//         success: true,
+//         user,
+//         message: "Profile Image has been removed",
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error(error);
+//     return NextResponse.json(
+//       {
+//         success: false,
+//         message: "Internal Server Error",
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
