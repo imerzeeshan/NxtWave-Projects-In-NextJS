@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
+  console.log("authProvider");
 
   const getUserSession = async () => {
     try {
@@ -16,7 +17,9 @@ const AuthProvider = ({ children }) => {
       if (res.ok) {
         dispatch(setCredentials(data));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

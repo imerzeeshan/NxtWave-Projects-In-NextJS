@@ -1,13 +1,20 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useAppContext } from "../context/AppContext";
 import Image from "next/image";
 import { Pencil, X } from "lucide-react";
 import { upload } from "@imagekit/next";
+import { useDispatch, useSelector } from "react-redux";
+import { useDeleteImageKitImageMutation } from "@/features/imageKitApiSlice";
+import { setCredentials, updateCredentials } from "@/features/authSlice";
 
 const ProfilePage = () => {
-  const { user, refreshSession } = useAppContext();
+  // const { refreshSession } = useAppContext();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const [deleteImageKitImage, { isLoading }] = useDeleteImageKitImageMutation();
+
   const [changeProfile, setChangeProfile] = useState(false);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
@@ -32,18 +39,19 @@ const ProfilePage = () => {
     }
     setIsRemoving(true);
     try {
-      const deleteImgRes = await fetch("/api/auth/imagekit-auth", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileId }),
-      });
+      const res = await deleteImageKitImage({ fileId }).unwrap();
+      console.log(res);
 
-      if (deleteImgRes.ok) {
+      if (res.success) {
         const res = await fetch("/api/user/profile", {
           method: "PUT",
         });
         setPreview("");
-        await refreshSession();
+        const data = await res.json();
+        console.log(data);
+
+        // await refreshSession();
+        dispatch(updateCredentials(data));
       }
     } catch (error) {
       console.error(error);
@@ -77,15 +85,22 @@ const ProfilePage = () => {
         return;
       }
 
-      const updateRes = await fetch("/api/user/profile", {
+      const response = await fetch("/api/user/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fileId, url, thumbnailUrl }),
       });
-      if (!updateRes.ok) {
+      console.log(response);
+
+      if (!response.ok) {
         handleDeleteImage(fileId);
       }
-      await refreshSession();
+      // const data = await updateRes.json();
+      const data = await response.json();
+      console.log(data);
+
+      // await refreshSession();
+      dispatch(updateCredentials(data));
     } catch (error) {
       console.error(error);
     } finally {

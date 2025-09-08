@@ -1,6 +1,6 @@
 import User from "@/models/User";
 import { cookies } from "next/headers";
-import { NextResponse, NextRequest } from "next/server"
+import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 
@@ -16,10 +16,7 @@ export async function GET() {
       );
     }
 
-    const decode = jwt.verify(
-      token,
-      process.env.JWT_TOKEN_SECRET
-    ) ;
+    const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
     await connectToDatabase();
     const user = await User.findById(decode.id);
@@ -42,21 +39,23 @@ export async function PATCH(req) {
       );
     }
 
-    const decode = jwt.verify(
-      token,
-      process.env.JWT_TOKEN_SECRET
-    ) ;
+    const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
     await connectToDatabase();
-    const user = await User.findByIdAndUpdate(decode.id, {
-      image: { url, fileId, thumbnailUrl },
-    }).select("-password");
+    const user = await User.findByIdAndUpdate(
+      decode.id,
+      {
+        image: { url, fileId, thumbnailUrl },
+      },
+      { new: true }
+    ).select("-password");
 
     console.log(user);
 
     return NextResponse.json(
       {
         success: true,
+        user,
         message: "Profile Image has been changed",
       },
       { status: 200 }
@@ -85,21 +84,23 @@ export async function PUT() {
       );
     }
 
-    const decode = jwt.verify(
-      token,
-      process.env.JWT_TOKEN_SECRET
-    ) ;
+    const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
     await connectToDatabase();
-    const user = await User.findByIdAndUpdate(decode.id, {
-      image: {},
-    }).select("-password");
+    const user = await User.findByIdAndUpdate(
+      decode.id,
+      {
+        image: null,
+      },
+      { new: true }
+    ).select("-password");
 
     console.log(user, "profile route");
 
     return NextResponse.json(
       {
         success: true,
+        user,
         message: "Profile Image has been removed",
       },
       { status: 200 }

@@ -1,6 +1,6 @@
 import { getUploadAuthParams } from "@imagekit/next/server";
 import Imagekit from "imagekit";
-import {  NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const imagekit = new Imagekit({
   publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
@@ -33,6 +33,8 @@ export async function GET() {
 export async function DELETE(req) {
   try {
     const { fileId } = await req.json();
+    console.log({ fileId });
+
     const response = await new Promise((resolve, reject) => {
       imagekit.deleteFile(fileId, (err, result) => {
         if (err) reject(err);
