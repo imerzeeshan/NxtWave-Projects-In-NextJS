@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
-  console.log("authProvider");
 
   const getUserSession = async () => {
     try {

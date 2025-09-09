@@ -116,6 +116,13 @@ export default function Navbar() {
                 </Link>
               </li>
             )}
+            {auth?.user?.role === "admin" && (
+              <li>
+                <Link href="/admin" className={linkClasses("/admin")}>
+                  Dashboard
+                </Link>
+              </li>
+            )}
             <li>
               <Link href="/product" className={linkClasses("/product")}>
                 Products

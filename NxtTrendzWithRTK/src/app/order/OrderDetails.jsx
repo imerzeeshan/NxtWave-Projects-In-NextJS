@@ -47,7 +47,10 @@ const OrderDetails = ({ orderDetails }) => {
       {/* 🔹 Status Progress Bar */}
       <div className="flex items-center justify-between mt-3">
         {steps.map((step, index) => (
-          <div key={step} className="flex-1 flex flex-col items-center">
+          <div
+            key={step}
+            className="flex-1 flex flex-col items-center relative"
+          >
             {/* Circle */}
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${

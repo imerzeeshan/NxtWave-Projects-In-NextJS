@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.9.0",
     "bcryptjs": "^3.0.2",
     "imagekit": "^6.0.0",
+    "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.540.0",
     "mongoose": "^8.17.2",

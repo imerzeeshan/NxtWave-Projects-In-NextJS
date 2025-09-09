@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import RemoveImageButton from "./RemoveImageButton";
 import SaveImageButton from "./SaveImageButton";
 import Loading from "../loading";
+import EditProfileForm from "./EditProfileForm";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -14,6 +15,7 @@ const ProfilePage = () => {
   const [changeProfile, setChangeProfile] = useState(false);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
+  const [editProfile, setEditProfile] = useState(false);
 
   console.log({ user });
 
@@ -63,7 +65,12 @@ const ProfilePage = () => {
           </button>
         )}
 
-        <button className="text-xs cursor-pointer font-bold hover:bg-gray-100/20 px-1 py-1">
+        {editProfile && <EditProfileForm onClose={setEditProfile} />}
+
+        <button
+          onClick={() => setEditProfile(true)}
+          className="text-xs cursor-pointer font-bold hover:bg-gray-100/20 px-1 py-1"
+        >
           Edit Profile
         </button>
       </div>
