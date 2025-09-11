@@ -1,11 +1,10 @@
 "use client";
-import { NUser } from "@/models/User";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { setRole } from "./action";
 
 const UserDetails = ({ user, index, setIsUpdated, isUpdated }) => {
-  const [isOpen, setIsOpen] = useState < boolean > false;
+  const [isOpen, setIsOpen] = useState(false);
   const currentRole = user.role;
 
   const handleRoleChange = async (role) => {

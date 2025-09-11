@@ -56,12 +56,12 @@ const ProfilePage = () => {
         >
           My Orders
         </Link>
-        {user.role === "user" && (
+        {(user.role === "user" || user.role === "moderator") && (
           <button
             onClick={handleBecomeSeller}
             className=" text-xs font-bold cursor-pointer hover:bg-gray-100/20 px-1 py-1"
           >
-            Become Seller
+            Become a Seller
           </button>
         )}
 
