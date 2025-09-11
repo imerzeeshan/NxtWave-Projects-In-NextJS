@@ -187,19 +187,21 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Side Drawer */}
+
       <div
-        className={`fixed top-0 right-0 min-h-screen w-64 bg-black/80 shadow-lg transform transition-transform 
-            duration-300 ease-in-out md:hidden z-40 ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+        className={`fixed top-0 right-0 min-h-screen w-64 bg-white shadow-lg transform transition-transform 
+      duration-300 ease-in-out md:hidden z-40 ${
+        menuOpen ? "translate-x-0" : "translate-x-full"
+      }`}
       >
-        <div className="flex justify-between items-center p-4 border-b text-white">
+        <div className="flex justify-between items-center p-4 border-b border-gray-700 text-gray-900">
           <span className="text-lg font-semibold">Menu</span>
           <button onClick={() => setMenuOpen(false)}>
             <X size={24} />
           </button>
         </div>
-        <ul className="flex flex-col space-y-4 p-4 font-medium text-white">
+
+        <ul className="flex flex-col space-y-4 p-4 font-medium">
           <li>
             <Link
               href="/"
@@ -209,15 +211,41 @@ export default function Navbar() {
               Home
             </Link>
           </li>
+
+          {auth?.user?.role === "seller" && (
+            <li>
+              <Link
+                href="/seller"
+                className={linkClasses("/seller")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            </li>
+          )}
+
+          {auth?.user?.role === "admin" && (
+            <li>
+              <Link
+                href="/admin"
+                className={linkClasses("/admin")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            </li>
+          )}
+
           <li>
             <Link
               href="/product"
               className={linkClasses("/product")}
               onClick={() => setMenuOpen(false)}
             >
-              Product
+              Products
             </Link>
           </li>
+
           <li>
             <Link
               href="/cart"
@@ -227,7 +255,20 @@ export default function Navbar() {
               Cart
             </Link>
           </li>
-          {false ? (
+
+          {auth?.loggedIn && (
+            <li>
+              <Link
+                href="/profile"
+                className={linkClasses("/profile")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Profile
+              </Link>
+            </li>
+          )}
+
+          {!auth?.loggedIn ? (
             <>
               <li>
                 <Link

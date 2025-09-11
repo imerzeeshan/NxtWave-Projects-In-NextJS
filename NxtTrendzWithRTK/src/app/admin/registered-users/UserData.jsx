@@ -20,9 +20,9 @@ const UserData = () => {
     getAllUsers();
   }, [isUpdated]);
   return (
-    <div className="space-y-6 my-6">
+    <div className="space-y-6 my-6 flex flex-col items-center">
       <div>
-        <h1>All Requested Users</h1>
+        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Requested Users</h2>
         <div className="overflow-x-auto">
           <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
             <thead className="bg-gray-800 text-gray-100">
@@ -64,7 +64,9 @@ const UserData = () => {
         </div>
       </div>
       <div>
-        <h1>All Registered Users</h1>
+        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">
+          All Registered Users
+        </h2>
         <div className="overflow-x-auto">
           <table className=" border border-gray-700 text-sm text-left text-gray-800">
             <thead className="bg-gray-800 text-gray-100">
@@ -102,7 +104,7 @@ const UserData = () => {
         </div>
       </div>
       <div>
-        <h1>All Admins</h1>
+        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Admins</h2>
         <div className="overflow-x-auto">
           <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
             <thead className="bg-gray-800 text-gray-100">
@@ -144,7 +146,7 @@ const UserData = () => {
         </div>
       </div>
       <div>
-        <h1>All Sellers</h1>
+        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Sellers</h2>
         <div className="overflow-x-auto">
           <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
             <thead className="bg-gray-800 text-gray-100">
@@ -186,7 +188,7 @@ const UserData = () => {
         </div>
       </div>
       <div>
-        <h1>All Normal Users</h1>
+        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Normal Users</h2>
         <div className="overflow-x-auto">
           <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
             <thead className="bg-gray-800 text-gray-100">

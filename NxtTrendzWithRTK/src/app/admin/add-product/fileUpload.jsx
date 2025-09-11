@@ -7,18 +7,7 @@ const FileUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
-  // optional validation
-  // const validateFile = (file) => {
-  //   if (fileType === "video") {
-  //     if (!file.type.startsWith("video/")) {
-  //       setError("Please upload a valid video file");
-  //     }
-  //   }
-  //   if (file.size > 100 * 1024 * 1024) {
-  //     setError("File size must be less than 100 MB");
-  //   }
-  //   return true;
-  // };
+
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
@@ -26,11 +15,6 @@ const FileUpload = () => {
 
     console.log(file);
 
-    // if (!file || !validateFile(file)) return;
-    // setUploading(true);
-    // setError(null);
-
-    // setImagePreview(URL.createObjectURL(file));
 
     try {
       const authRes = await fetch("/api/auth/imagekit-auth");
