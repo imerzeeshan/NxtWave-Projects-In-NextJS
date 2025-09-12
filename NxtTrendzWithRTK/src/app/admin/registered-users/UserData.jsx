@@ -1,234 +1,71 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import UserDetails from "./UserDetails";
+import UserTable from "./UserTable";
+import Loading from "@/app/loading";
 
 const UserData = () => {
   const [allUser, setAllUser] = useState([]);
   const [isUpdated, setIsUpdated] = useState(false);
-  console.table(allUser);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAllUsers = async () => {
-    const res = await fetch("/api/user/user-data", { method: "GET" });
-    if (res.ok) {
-      const data = await res.json();
-      setAllUser(data.allUsers);
+    try {
+      const res = await fetch("/api/user/user-data", { method: "GET" });
+      if (res.ok) {
+        const data = await res.json();
+        setAllUser(data.allUsers);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getAllUsers();
   }, [isUpdated]);
-  return (
-    <div className="space-y-6 my-6 flex flex-col items-center">
-      <div>
-        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Requested Users</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
-            <thead className="bg-gray-800 text-gray-100">
-              <tr>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[80px]">
-                  S.No.
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Name
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[200px]">
-                  Email
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[120px]">
-                  Role
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUser?.map((user, index) => {
-                return (
-                  user.role === "requested" && (
-                    <tr key={user._id.toString()} className="hover:bg-gray-200">
-                      <UserDetails
-                        index={index}
-                        user={user}
-                        isUpdated={isUpdated}
-                        setIsUpdated={setIsUpdated}
-                      />
-                    </tr>
-                  )
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">
-          All Registered Users
-        </h2>
-        <div className="overflow-x-auto">
-          <table className=" border border-gray-700 text-sm text-left text-gray-800">
-            <thead className="bg-gray-800 text-gray-100">
-              <tr>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[80px]">
-                  S.No.
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Name
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[200px]">
-                  Email
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[120px]">
-                  Role
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUser?.map((user, index) => (
-                <tr key={user._id.toString()} className="hover:bg-gray-200">
-                  <UserDetails
-                    index={index}
-                    user={user}
-                    isUpdated={isUpdated}
-                    setIsUpdated={setIsUpdated}
-                  />
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Admins</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
-            <thead className="bg-gray-800 text-gray-100">
-              <tr>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[80px]">
-                  S.No.
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Name
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[200px]">
-                  Email
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[120px]">
-                  Role
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUser?.map((user, index) => {
-                return (
-                  user.role === "admin" && (
-                    <tr key={user._id.toString()} className="hover:bg-gray-200">
-                      <UserDetails
-                        index={index}
-                        user={user}
-                        isUpdated={isUpdated}
-                        setIsUpdated={setIsUpdated}
-                      />
-                    </tr>
-                  )
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Sellers</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
-            <thead className="bg-gray-800 text-gray-100">
-              <tr>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[80px]">
-                  S.No.
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Name
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[200px]">
-                  Email
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[120px]">
-                  Role
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUser?.map((user, index) => {
-                return (
-                  user.role === "seller" && (
-                    <tr key={user._id.toString()} className="hover:bg-gray-200">
-                      <UserDetails
-                        index={index}
-                        user={user}
-                        isUpdated={isUpdated}
-                        setIsUpdated={setIsUpdated}
-                      />
-                    </tr>
-                  )
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-lg font-bold text-gray-700 mb-2 underline">All Normal Users</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800">
-            <thead className="bg-gray-800 text-gray-100">
-              <tr>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[80px]">
-                  S.No.
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Name
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[200px]">
-                  Email
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[120px]">
-                  Role
-                </th>
-                <th className="px-4 py-2 border-b whitespace-nowrap min-w-[150px]">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUser?.map((user, index) => {
-                return (
-                  user.role === "user" && (
-                    <tr key={user._id.toString()} className="hover:bg-gray-200">
-                      <UserDetails
-                        index={index}
-                        user={user}
-                        isUpdated={isUpdated}
-                        setIsUpdated={setIsUpdated}
-                      />
-                    </tr>
-                  )
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <div className="space-y-10 my-6 flex flex-col items-center w-full">
+      <UserTable
+        title="All Requested Users"
+        users={allUser}
+        filterRole="requested"
+        isUpdated={isUpdated}
+        setIsUpdated={setIsUpdated}
+      />
+      <UserTable
+        title="All Registered Users"
+        users={allUser}
+        filterRole={null} // shows all
+        isUpdated={isUpdated}
+        setIsUpdated={setIsUpdated}
+      />
+      <UserTable
+        title="All Admins"
+        users={allUser}
+        filterRole="admin"
+        isUpdated={isUpdated}
+        setIsUpdated={setIsUpdated}
+      />
+      <UserTable
+        title="All Sellers"
+        users={allUser}
+        filterRole="seller"
+        isUpdated={isUpdated}
+        setIsUpdated={setIsUpdated}
+      />
+      <UserTable
+        title="All Normal Users"
+        users={allUser}
+        filterRole="user"
+        isUpdated={isUpdated}
+        setIsUpdated={setIsUpdated}
+      />
     </div>
   );
 };

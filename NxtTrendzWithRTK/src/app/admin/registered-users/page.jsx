@@ -1,6 +1,6 @@
 import UserData from "./UserData";
 
-const RegiteredUsers = () => {
+const RegisteredUsers = () => {
   return (
     <div className="pt-15 w-full">
       <h1 className="text-xl font-semibold text-gray-800">Registered Users</h1>
@@ -11,4 +11,4 @@ const RegiteredUsers = () => {
   );
 };
 
-export default RegiteredUsers;
+export default RegisteredUsers;

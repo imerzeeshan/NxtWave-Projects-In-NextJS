@@ -23,7 +23,7 @@ const AdminSideBar = () => {
           } lg:translate-x-0`}
       >
         {/* Sidebar header for mobile */}
-        <div className="lg:hidden flex justify-between items-center mb-6">
+        <div className="lg:hidden flex justify-between items-center mb-3">
           <h1 className="text-lg font-bold">Admin Panel</h1>
           <button onClick={() => setIsOpen(false)} className="p-2">
             <X size={24} />
@@ -31,6 +31,7 @@ const AdminSideBar = () => {
         </div>
 
         <nav className="flex flex-col gap-1 text-[18px]">
+          <h1 className="text-xl font-bold mb-5 hidden lg:block">Admin Panel</h1>
           <Link href="/admin" className={linkClasses("/admin")}>
             Dashboard
           </Link>
@@ -71,7 +72,10 @@ const AdminSideBar = () => {
 
       {/* Mobile top bar */}
       <div className="lg:hidden mt-14 bg-green-600 text-white p-4 relative pr-10">
-        <button onClick={() => setIsOpen(true)} className="focus:outline-none fixed">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="focus:outline-none fixed"
+        >
           <Menu size={24} />
         </button>
       </div>

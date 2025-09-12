@@ -178,7 +178,7 @@ const ProductFormDetails = () => {
             type="file"
             name="imageFile"
             accept="image/*"
-            className="file-input border-2 border-gray-400 rounded px-2 py-1.5 text-lg text-gray-700 focus:outline-2
+            className="file-input w-full border-2 border-gray-400 rounded px-2 py-1.5 text-lg text-gray-700 focus:outline-2
            focus:outline-fuchsia-500 cursor-pointer"
           />
         </div>
