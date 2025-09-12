@@ -19,10 +19,10 @@ const UserTable = ({ title, users, filterRole, isUpdated, setIsUpdated }) => {
   };
 
   return (
-    <div className="mb-10 w-full">
+    <div className="mb-10 w-screen">
       <h2 className="text-lg font-bold text-gray-700 mb-2 underline">{title}</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-max table-auto border border-gray-700 text-sm text-left text-gray-800 w-full">
+        <table className="min-w-full divide-y border border-gray-700 text-sm text-left text-gray-800">
           <thead className="bg-gray-800 text-gray-100">
             <tr>
               <th className="px-4 py-2 border-b min-w-[80px]">S.No.</th>

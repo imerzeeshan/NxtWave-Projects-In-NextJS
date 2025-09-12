@@ -1,7 +1,7 @@
 "use client";
-import { useAppContext } from "@/app/context/AppContext";
 import { upload } from "@imagekit/next";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const categoryOptions = [
   { name: "Clothes", categoryId: "1" },
@@ -12,7 +12,7 @@ const categoryOptions = [
 ];
 
 const ProductFormDetails = () => {
-  const { user } = useAppContext();
+  const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
   const handleFormAction = async (formData) => {

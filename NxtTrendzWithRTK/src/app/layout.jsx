@@ -2,7 +2,6 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ReduxProviders } from "@/reduxProvider/reduxProviders";
-import { AppProvider } from "./context/AppContext";
 import AuthProvider from "@/authProviders/authProviders";
 
 // const geistSans = Geist({
@@ -61,12 +60,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ReduxProviders>
-          <AppProvider>
-            <AuthProvider>
-              <Navbar />
-              {children}
-            </AuthProvider>
-          </AppProvider>
+          <AuthProvider>
+            <Navbar />
+            {children}
+          </AuthProvider>
         </ReduxProviders>
       </body>
     </html>

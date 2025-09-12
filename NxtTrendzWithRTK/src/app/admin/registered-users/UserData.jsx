@@ -30,7 +30,7 @@ const UserData = () => {
   return isLoading ? (
     <Loading />
   ) : (
-    <div className="space-y-10 my-6 flex flex-col items-center w-full">
+    <div className="space-y-10 my-6 flex flex-col items-center">
       <UserTable
         title="All Requested Users"
         users={allUser}
