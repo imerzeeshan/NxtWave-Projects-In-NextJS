@@ -1,5 +1,6 @@
-import { useAppContext } from "@/app/context/AppContext";
+import { setSortBy } from "@/features/productSlice";
 import { AlignRight } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 const sortbyOptions = [
   {
@@ -13,7 +14,8 @@ const sortbyOptions = [
 ];
 
 export default function ProductHeader() {
-  const { sortBy, setSortBy } = useAppContext();
+  const { sortBy } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
   return (
     <div className="grid grid-cols-[auto_235px] gap-2 mb-7 md:mb-0 md:pt-4">
       <h1 className="w-full md:text-center text-2xl md:font-semibold text-gray-700/90">
@@ -26,7 +28,9 @@ export default function ProductHeader() {
         <select
           className="border p-1 rounded"
           value={sortBy || ""}
-          onChange={(e) => setSortBy(e.target.value ? e.target.value : null)}
+          onChange={(e) =>
+            dispatch(setSortBy(e.target.value ? e.target.value : null))
+          }
         >
           <option value="">select</option>
           {sortbyOptions.map((option) => (

@@ -4,25 +4,40 @@ import FilterGroup from "./FilterGroup";
 import ProductHeader from "./ProductHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilteredProducts, setProducts } from "@/features/productSlice";
+import Loading from "@/app/loading";
 
-const SellerProductsPage = () => {
-  const [products, setProducts] = useState([]);
-  console.log(products);
+const ProductsPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { filteredProducts } = useSelector((state) => state.products);
+  // console.log(products);
+
   const getAllProducts = async () => {
-    const res = await fetch("/api/seller/product", {
-      method: "GET",
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setProducts(data.products);
-      // setFilteredProducts(data.products);
+    try {
+      const res = await fetch("/api/seller/product", {
+        method: "GET",
+      });
+      if (res.ok) {
+        const data = await res.json();
+
+        dispatch(setProducts(data.products));
+        dispatch(setFilteredProducts(data.products));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getAllProducts();
   }, []);
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <div
       className="max-w-[90%] xl:max-w-[80%] mx-auto mt-25 grid grid-cols-1 md:grid-cols-[200px_1fr]
     lg:grid-cols-[200px_1fr] gap-5"
@@ -41,7 +56,7 @@ const SellerProductsPage = () => {
 
         {/* Product cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-4">
-          {products?.map((product) => (
+          {filteredProducts?.map((product) => (
             <Link
               href={`/product/${product._id}`}
               key={product._id}
@@ -74,4 +89,4 @@ const SellerProductsPage = () => {
   );
 };
 
-export default SellerProductsPage;
+export default ProductsPage;

@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
-import { CustomJwtPayload } from "../../auth/cart/route";
 import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";

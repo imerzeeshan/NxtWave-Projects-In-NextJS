@@ -61,9 +61,12 @@ export default function RootLayout({ children }) {
       <body>
         <AppProvider>
           <Navbar />
-          <div className="flex gap-10">
+          <div className="min-h-screen flex">
             <SellerSideBar />
-            {children}
+            {/* Content wrapper */}
+            <main className="flex-1 p-6 bg-gray-50 lg:ml-[230px]">
+              {children}
+            </main>
           </div>
         </AppProvider>
       </body>

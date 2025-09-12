@@ -1,7 +1,8 @@
 import { Search } from "lucide-react";
 import RatingStars from "./RatingStars";
 import { useEffect, useState } from "react";
-import { useAppContext } from "@/app/context/AppContext";
+import { setFilteredProducts, setSortBy } from "@/features/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const categoryOptions = [
   {
@@ -61,11 +62,13 @@ const ratingsList = [
 ];
 
 export default function FilterGroup() {
-  const { products, setFilteredProducts, sortBy, setSortBy } = useAppContext();
+  const { products, sortBy } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [appliedSearch, setAppliedSearch] = useState("");
   const [selectedCatogory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(0);
+  // console.log(products);
 
   const clearFilter = () => {
     setSearch("");
@@ -73,8 +76,8 @@ export default function FilterGroup() {
     setSelectedCategory(null);
     setSelectedRating(0);
     // setSelectedSort(null);
-    setFilteredProducts(products);
-    setSortBy(null);
+    dispatch(setFilteredProducts(products));
+    dispatch(setSortBy(null));
   };
 
   const handleSearch = () => {
@@ -109,13 +112,13 @@ export default function FilterGroup() {
       filtered.sort((a, b) => a.price - b.price);
     }
 
-    setFilteredProducts(filtered);
+    dispatch(setFilteredProducts(filtered));
   }, [appliedSearch, selectedRating, sortBy, selectedCatogory]);
 
   return (
-    <div className="w-fit flex flex-col gap-5 mx-auto">
-      <div className="md:h-19 bg-white pt-8">
-        <div className="flex items-center bg-gray-100 border rounded h-10 w-full max-w-md">
+    <div className="w-fit flex flex-col gap-5 mx-auto md:max-w-[200px]">
+      <div className="md:h-19 bg-white pt-8 md:min-w-[350px]">
+        <div className="flex items-center bg-gray-100 border rounded h-10 w-full">
           <input
             type="search"
             className="md:w-[200px] lg:w-[300px] outline-0 px-3 text-sm sm:text-base md:text-lg text-gray-600 

@@ -1,53 +1,45 @@
 "use client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import Link from "next/link";
-import { useAppContext } from "@/app/context/AppContext";
+import { useGetProductDetailApiMutation } from "@/features/productApiSlice";
+import AddToCartButton from "./AddToCartButton";
+import Loading from "@/app/loading";
 
 const ProductDetailsPage = () => {
-  const { user } = useAppContext();
-  const { id } = useParams();
+  const id = useParams().id.toString();
   const [productDetails, setProductDetails] = useState(null);
   const [item, setItem] = useState(1);
-  // console.log(id);
+  console.log({ productDetails });
+
+  const [getProductDetailApi, { isLoading, isError, error, isSuccess, data }] =
+    useGetProductDetailApiMutation();
+
+  // console.log("component");
 
   const getProductDetails = async () => {
-    const res = await fetch(`/api/auth/product/${id}`);
-
-    if (res.ok) {
-      const data = await res.json();
+    const { data } = await getProductDetailApi(id);
+    if (data) {
       // console.log(data.productDetails);
       setProductDetails(data.productDetails);
     }
   };
 
-  const handleSetItemDecrease = async () => {
+  const handleSetItemDecrease = useCallback(() => {
     if (item > 1) {
       setItem((prev) => prev - 1);
     }
-  };
-
-  const handleAddToCart = async () => {
-    const res = await fetch("/api/auth/cart", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        productId: productDetails?.product._id,
-        title: productDetails?.product.title,
-        brand: productDetails?.product.brand,
-        productCount: item,
-        userId: user?.id,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-  };
+  }, []);
 
   useEffect(() => {
+    // console.log("useEffect");
+
     getProductDetails();
   }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="max-w-[90%] xl:max-w-[80%] mx-auto mt-30 pb-15">
@@ -114,12 +106,7 @@ const ProductDetailsPage = () => {
               +
             </button>
           </div>
-          <button
-            onClick={handleAddToCart}
-            className="mt-5 bg-blue-500 rounded text-white font-semibold px-3 py-3 cursor-pointer"
-          >
-            ADD TO CART
-          </button>
+          <AddToCartButton productId={productDetails?.product?._id} />
         </div>
       </div>
       <div>

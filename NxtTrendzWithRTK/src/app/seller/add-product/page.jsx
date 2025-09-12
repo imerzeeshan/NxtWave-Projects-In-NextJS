@@ -1,11 +1,11 @@
-import React from "react";
+import ProductFormDetails from "./productFormDetails";
 
-const AddProductPage = () => {
+const UploadProduct = () => {
   return (
-    <div className="mt-25">
-      <h1>Add Product</h1>
+    <div className="mt-16">
+      <ProductFormDetails />
     </div>
   );
 };
 
-export default AddProductPage;
+export default UploadProduct;
