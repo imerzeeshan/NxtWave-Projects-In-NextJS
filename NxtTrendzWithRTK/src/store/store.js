@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "@/features/apiSlice";
 import authReducer from "@/features/authSlice";
 import products from "@/features/productSlice";
+import users from "@/features/userSlice";
 import { productApiSlice } from "@/features/productApiSlice";
 import { cartApiSlice } from "@/features/cartApiSlice";
 import { orderApiSlice } from "@/features/orderApiSlice";
@@ -20,6 +21,7 @@ export const store = configureStore({
     [profileApiSlice.reducerPath]: profileApiSlice.reducer,
     [userApiSlice.reducerPath]: userApiSlice.reducer,
     products: products,
+    users: users,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

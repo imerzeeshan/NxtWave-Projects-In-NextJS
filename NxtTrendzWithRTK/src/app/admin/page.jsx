@@ -7,11 +7,15 @@ const AdminHomePage = () => {
   const [users, setUsers] = useState([]);
   const [getAllUsers, { isLoading }] = useGetAllUsersMutation();
 
+  console.log(users);
+
   const getAllUsersFn = async () => {
     try {
       const data = await getAllUsers().unwrap();
+      console.log(data);
+      
       if (data.success) {
-        setUsers(data.AllUsers);
+        setUsers(data.allUsers);
       }
     } catch (error) {
       console.error(error);
@@ -25,8 +29,8 @@ const AdminHomePage = () => {
   return isLoading ? (
     <Loading />
   ) : (
-    <div className="pt-20 px-6">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+    <div className="pt-13 px-6">
+      <h1 className="text-3xl font-bold mb-6 text-fuchsia-600">Admin Dashboard</h1>
 
       {/* 🔹 Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -61,7 +65,7 @@ const AdminHomePage = () => {
           </thead>
           <tbody>
             {users?.map((u) => (
-              <tr key={u.id} className="border-t">
+              <tr key={u._id} className="border-t">
                 <td className="px-4 py-2">{u.name}</td>
                 <td className="px-4 py-2">{u.email}</td>
                 <td className="px-4 py-2">{u.role}</td>
