@@ -1,19 +1,6 @@
 import bcrypt from "bcryptjs";
 import { model, models, Schema } from "mongoose";
 
-const userAddress = new Schema({
-  name: { type: String, required: true },
-  mobile: { type: Number, required: true },
-  pincode: { type: String, required: true },
-  locality: { type: String, required: true },
-  address: { type: String, required: true },
-  district: { type: String, required: true },
-  state: { type: String, required: true },
-  addressType: { type: String, required: true },
-  alternatePhone: { type: Number },
-  Landmark: { type: String },
-});
-
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -21,7 +8,6 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     phone: { type: Number },
     bio: { type: String },
-    address: userAddress,
     role: {
       type: String,
       enum: ["user", "seller", "admin", "requested"], // ✅ only allow these values

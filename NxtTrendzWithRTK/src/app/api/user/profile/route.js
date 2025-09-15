@@ -26,8 +26,10 @@ export async function GET() {
 
 export async function PATCH(req) {
   try {
-    const { url, thumbnailUrl, fileId, action } = await req.json();
-    console.log(url, thumbnailUrl, fileId, action);
+    const { url, thumbnailUrl, fileId, action, phone, bio } = await req.json();
+    console.log({ action, phone, bio });
+
+    // console.log(url, thumbnailUrl, fileId, action);
 
     const cookie = await cookies();
     const token = cookie.get("token")?.value;
@@ -77,6 +79,40 @@ export async function PATCH(req) {
           message: "Profile Image has been changed",
         },
         { status: 200 }
+      );
+    }
+
+    if (action === "phone") {
+      user = await User.findByIdAndUpdate(
+        decode.id,
+        { phone: phone },
+        { new: true }
+      ).select("-password");
+
+      return NextResponse.json(
+        {
+          success: true,
+          user,
+          message: "Phone has been updated successfully",
+        },
+        { status: 201 }
+      );
+    }
+
+    if (action === "bio") {
+      user = await User.findByIdAndUpdate(
+        decode.id,
+        { bio: bio },
+        { new: true }
+      ).select("-password");
+
+      return NextResponse.json(
+        {
+          success: true,
+          user,
+          message: "Bio Addedd Successfully",
+        },
+        { status: 201 }
       );
     }
 

@@ -29,3 +29,14 @@ a,
 button {
   cursor: pointer;
 }
+
+/* Custom Tailwind utility for removing number input arrows */
+.input-no-spinner::-webkit-outer-spin-button,
+.input-no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-no-spinner {
+  -moz-appearance: textfield; /* Firefox */
+}

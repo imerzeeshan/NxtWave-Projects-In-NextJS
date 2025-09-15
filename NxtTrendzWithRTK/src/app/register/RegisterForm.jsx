@@ -36,7 +36,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
+    <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg mb-25">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
         Create Account
       </h2>

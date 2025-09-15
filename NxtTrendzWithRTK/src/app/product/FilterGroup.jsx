@@ -118,7 +118,7 @@ export default function FilterGroup() {
   return (
     <div className="w-fit flex flex-col gap-5 mx-auto md:max-w-[200px]">
       <div className="md:h-19 bg-white pt-8 md:min-w-[350px]">
-        <div className="flex items-center bg-gray-100 border rounded h-10 w-full">
+        <div className="flex items-center bg-gray-100 border rounded h-10 w-fit">
           <input
             type="search"
             className="md:w-[200px] lg:w-[300px] outline-0 px-3 text-sm sm:text-base md:text-lg text-gray-600 

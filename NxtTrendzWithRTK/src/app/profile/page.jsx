@@ -8,6 +8,9 @@ import RemoveImageButton from "./RemoveImageButton";
 import SaveImageButton from "./SaveImageButton";
 import Loading from "../loading";
 import EditProfileForm from "./EditProfileForm";
+import Address from "./Address";
+import AddPhone from "./AddPhone";
+import AddBio from "./AddBio";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -16,6 +19,8 @@ const ProfilePage = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
   const [editProfile, setEditProfile] = useState(false);
+  const [addPhone, setAddPhone] = useState(false);
+  const [addBio, setAddBio] = useState(false);
 
   console.log({ user });
 
@@ -94,7 +99,14 @@ const ProfilePage = () => {
         <div>
           <h1 className="text-2xl font-semibold">{user?.name}</h1>
           <p className="font-semibold">Email: {user?.email}</p>
-          <p className="">Phone: {user?.phone}</p>
+          <div className="flex items-center gap-5">
+            <p className="">Phone: {user?.phone} </p>
+            <Pencil
+              onClick={() => setAddPhone(true)}
+              size={25}
+              className=" cursor-pointer hover:bg-gray-200/20 p-1 hover:rounded-full"
+            />
+          </div>
           <div className="flex gap-2 items-center">
             Role:
             {user.role === "requested" ? (
@@ -114,10 +126,17 @@ const ProfilePage = () => {
             })}
           </p>
         </div>
-        <div>
-          <p>Bio: </p>
-          <p>Address: </p>
+        <div className="relative flex gap-5 pr-5">
+          <p>Bio: {user.bio} </p>
+          <Pencil
+            onClick={() => setAddBio(true)}
+            size={25}
+            className="absolute -right-3 -top-1 cursor-pointer hover:bg-gray-200/20 p-1 hover:rounded-full"
+          />
         </div>
+      </div>
+      <div className="mb-5">
+        <Address />
       </div>
       {changeProfile && (
         <div className="h-screen w-screen bg-gray-500/50 absolute top-0 pt-25">
@@ -163,6 +182,10 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
+      {/* adding phone*/}
+      {addPhone && <AddPhone setAddPhone={setAddPhone} />}
+      {/* adding Bio*/}
+      {addBio && <Add BiosetAddBio={setAddBio} />}
     </div>
   );
 };

@@ -44,6 +44,8 @@ export async function POST(req) {
       email: user.email,
       role: user.role,
       image: user.image,
+      phone: user.phone,
+      bio: user.bio,
       createdAt: user.createdAt,
     };
 
