@@ -1,5 +1,6 @@
 "use client";
 import { upload } from "@imagekit/next";
+import { useSelector } from 'react-redux';
 import { useState } from "react";
 
 const categoryOptions = [
