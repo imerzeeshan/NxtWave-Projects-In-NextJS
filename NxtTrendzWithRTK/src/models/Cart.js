@@ -9,6 +9,7 @@ const userCartSchema = new Schema(
     },
     productCount: { type: Number, required: true, default: 1 },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    sellerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

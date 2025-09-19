@@ -13,6 +13,7 @@ const OrderItemSchema = new Schema({
 const OrderSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    sellerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     items: [OrderItemSchema],
     totalAmount: { type: Number, required: true },
     status: {

@@ -27,11 +27,11 @@ const ProductDetailsPage = () => {
     }
   };
 
-  const handleSetItemDecrease = useCallback(() => {
+  const handleSetItemDecrease = () => {
     if (item > 1) {
       setItem((prev) => prev - 1);
     }
-  }, []);
+  };
 
   useEffect(() => {
     // console.log("useEffect");

@@ -1,7 +1,8 @@
 import { connectToDatabase } from "@/lib/db";
 import Product from "@/models/Product";
 import { revalidatePath } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -36,6 +37,8 @@ export async function POST(req) {
   try {
     const body = await req.json();
     // console.log(body);
+    // const cookie = await cookies();
+    // const token = cookie.get("token")?.value;
     const {
       title,
       brand,
@@ -51,7 +54,7 @@ export async function POST(req) {
       availability,
       seller,
     } = body;
-    console.log(style, description, totalReviews, availability);
+    console.log({ seller });
 
     if (
       !title ||
@@ -73,6 +76,10 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+
+    // const secret = new TextEncoder().encode(process.env.JWT_TOKEN_SECRET);
+    // const { payload } = await jwtVerify(token, secret);
+    // console.log(payload, "add product");
 
     // Convert string values to numbers if needed
     const isPrice = Number(price);

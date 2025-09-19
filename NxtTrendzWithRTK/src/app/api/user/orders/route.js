@@ -21,24 +21,11 @@ export async function POST(req) {
       );
     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
-    // body should look like this:
-    // {
-    //   "user": "66d1b5e...",
-    //   "items": [{ "product": "66d1a8c...", "quantity": 2 }],
-    //   "shippingAddress": {...},
-    //   "payment": { "method": "card" }
-    // }
-
     await connectToDatabase();
     const cartItems = await Cart.find({ userId: decode.id })
       .populate("product")
       .populate("userId", "name email")
       .lean();
-
-    //   .populate("userId", "name email");
-    // console.log(cartItems);
-
-    // const { items, shippingAddress, payment } = body;
 
     if (!decode.id || !cartItems || cartItems.length === 0) {
       return NextResponse.json(

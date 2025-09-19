@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
+import Product from "@/models/Product";
 
 export async function POST(req) {
   try {
@@ -23,15 +24,20 @@ export async function POST(req) {
     }
 
     await connectToDatabase();
+    const products = await Product.findById(product);
+    const { seller } = products;
+    console.log(products);
+
     const updatedCartItem = await Cart.findOneAndUpdate(
       {
         userId: new mongoose.Types.ObjectId(userId),
         product: new mongoose.Types.ObjectId(product),
+        sellerId: new mongoose.Types.ObjectId(seller),
       },
-      { $inc: { productCount: 1 } },
-      { new: true, upsert: true }
+      { $inc: { productCount: 1 } }
+      // { new: true, upsert: true }
     );
-    console.log(updatedCartItem);
+    console.log(updatedCartItem, "Add To Cart");
 
     return NextResponse.json(
       {
