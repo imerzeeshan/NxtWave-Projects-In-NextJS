@@ -4,21 +4,28 @@ import { NProduct } from "./Product"; // import your product interface
 // OrderItem schema
 const OrderItemSchema = new Schema({
   product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  seller: { type: Schema.Types.ObjectId, ref: "User", required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   subtotal: { type: Number, required: true },
+  buyerEmail: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+    default: "pending",
+  },
 });
 
 // Order schema
 const OrderSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    sellerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    buyerEmail: { type: String, required: true },
     items: [OrderItemSchema],
     totalAmount: { type: Number, required: true },
     status: {
       type: String,
-      enum: ["pending", "paid", "shipped", "completed", "cancelled"],
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
     shippingAddress: {

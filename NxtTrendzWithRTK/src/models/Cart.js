@@ -15,7 +15,7 @@ const userCartSchema = new Schema(
 );
 
 // Optional: prevent same product multiple times for same user
-userCartSchema.index({ userId: 1, product: 1 }, { unique: true });
+userCartSchema.index({ userId: 1, product: 1, sellerId: 1 }, { unique: true });
 
 const Cart = models?.Cart || model("Cart", userCartSchema);
 

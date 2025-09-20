@@ -26,7 +26,7 @@ export async function POST(req) {
     await connectToDatabase();
     const products = await Product.findById(product);
     const { seller } = products;
-    console.log(products);
+    // console.log(products);
 
     const updatedCartItem = await Cart.findOneAndUpdate(
       {
@@ -34,8 +34,8 @@ export async function POST(req) {
         product: new mongoose.Types.ObjectId(product),
         sellerId: new mongoose.Types.ObjectId(seller),
       },
-      { $inc: { productCount: 1 } }
-      // { new: true, upsert: true }
+      { $inc: { productCount: 1 } },
+      { new: true, upsert: true }
     );
     console.log(updatedCartItem, "Add To Cart");
 

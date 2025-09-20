@@ -3,7 +3,6 @@ import Product from "@/models/Product";
 import mongoose from "mongoose";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { CustomJwtPayload } from "../../seller/product/route";
 import Cart from "@/models/Cart";
 import { connectToDatabase } from "@/lib/db";
 import Order from "@/models/Orders";
@@ -46,7 +45,9 @@ export async function POST(req) {
         const subtotal = price * item.productCount;
         return {
           product: new mongoose.Types.ObjectId(item.product._id),
+          seller: new mongoose.Types.ObjectId(item.product.seller),
           quantity: item.productCount,
+          buyerEmail: decode.email,
           price,
           subtotal,
         };
@@ -64,6 +65,7 @@ export async function POST(req) {
     // ✅ Create new order
     const newOrder = await Order.create({
       user: new mongoose.Types.ObjectId(decode.id),
+      buyerEmail: decode.email,
       items: populatedItems,
       totalAmount,
       // shippingAddress,
@@ -82,6 +84,8 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (err) {
+    console.error(err);
+
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }
