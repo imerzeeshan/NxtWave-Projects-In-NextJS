@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Check, Clock, Circle } from "lucide-react"; // ✅ Icons
 
 const Orders = () => {
   const { user } = useSelector((state) => state.auth);
@@ -61,7 +62,13 @@ const Orders = () => {
     }
   }
 
-  const steps = ["pending", "processing", "shipped", "delivered"];
+  const steps = [
+    "pending",
+    "processing",
+    "shipped",
+    "out_for_delivery",
+    "delivered",
+  ];
 
   const statusClasses = {
     pending: "bg-yellow-100 text-yellow-700",
@@ -78,31 +85,61 @@ const Orders = () => {
     refunded: "bg-blue-100 text-blue-700",
   };
 
+  // 🔹 Styled Progress Bar with Icons
   const renderProgressBar = (status) => {
     const currentStep = steps.indexOf(status);
+
     return (
-      <div className="flex items-center mt-2">
-        {steps.map((step, index) => (
-          <div key={step} className="flex items-center w-full">
+      <div className="relative flex items-center justify-between mt-4">
+        {/* Background Line */}
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -z-10"></div>
+
+        {/* Active Line */}
+        <div
+          className="absolute top-1/2 left-0 h-1 bg-green-500 -z-10 transition-all duration-500"
+          style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
+        ></div>
+
+        {/* Steps */}
+        {steps.map((step, index) => {
+          const isCompleted = index < currentStep;
+          const isActive = index === currentStep;
+
+          return (
             <div
-              className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                ${
-                  index <= currentStep
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-200 text-gray-500"
-                }`}
+              key={step}
+              className="flex flex-col items-center relative z-10 w-full"
             >
-              {index + 1}
-            </div>
-            {index < steps.length - 1 && (
               <div
-                className={`flex-1 h-1 ${
-                  index < currentStep ? "bg-green-500" : "bg-gray-300"
-                }`}
-              ></div>
-            )}
-          </div>
-        ))}
+                className={`w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold shadow-md transition-all duration-300
+                  ${isCompleted ? "bg-green-500 text-white" : ""}
+                  ${
+                    isActive
+                      ? "bg-yellow-400 text-black ring-4 ring-yellow-200 animate-pulse"
+                      : ""
+                  }
+                  ${
+                    !isCompleted && !isActive ? "bg-gray-200 text-gray-500" : ""
+                  }
+                `}
+              >
+                {isCompleted && <Check size={16} />}
+                {isActive && <Clock size={16} />}
+                {!isCompleted && !isActive && <Circle size={14} />}
+              </div>
+              <span
+                className={`text-[11px] mt-1 capitalize transition-colors duration-300
+                  ${isCompleted ? "text-green-600" : ""}
+                  ${
+                    isActive ? "text-yellow-600 font-semibold" : "text-gray-400"
+                  }
+                `}
+              >
+                {step.replaceAll("_", " ")}
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -175,6 +212,7 @@ const Orders = () => {
             <option value="pending">Pending</option>
             <option value="processing">Processing</option>
             <option value="shipped">Shipped</option>
+            <option value="out_for_delivery">Out For Delivery</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
           </select>
@@ -286,6 +324,9 @@ const Orders = () => {
                           <option value="pending">Pending</option>
                           <option value="processing">Processing</option>
                           <option value="shipped">Shipped</option>
+                          <option value="out_for_delivery">
+                            Out For Delivery
+                          </option>
                           <option value="delivered">Delivered</option>
                           <option value="cancelled">Cancelled</option>
                         </select>

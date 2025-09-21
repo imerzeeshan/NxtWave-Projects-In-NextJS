@@ -1,5 +1,4 @@
-import mongoose, { Schema, model, models, Document } from "mongoose";
-import { NProduct } from "./Product"; // import your product interface
+import mongoose, { Schema, model, models } from "mongoose";
 
 // OrderItem schema
 const OrderItemSchema = new Schema({
@@ -11,7 +10,14 @@ const OrderItemSchema = new Schema({
   buyerEmail: { type: String, required: true },
   status: {
     type: String,
-    enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+    enum: [
+      "pending",
+      "processing",
+      "shipped",
+      "out_for_delivery",
+      "delivered",
+      "cancelled",
+    ],
     default: "pending",
   },
 });
@@ -25,7 +31,14 @@ const OrderSchema = new Schema(
     totalAmount: { type: Number, required: true },
     status: {
       type: String,
-      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      enum: [
+        "pending",
+        "processing",
+        "shipped",
+        "out_for_delivery",
+        "delivered",
+        "cancelled",
+      ],
       default: "pending",
     },
     shippingAddress: {

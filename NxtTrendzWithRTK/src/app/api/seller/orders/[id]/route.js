@@ -36,6 +36,8 @@ export async function PUT(req, { params }) {
     let overallStatus = "pending";
     if (itemStatuses.every((s) => s === "delivered")) {
       overallStatus = "delivered";
+    } else if (itemStatuses.every((s) => s === "out_for_delivery")) {
+      overallStatus = "out_for_delivery";
     } else if (itemStatuses.some((s) => s === "shipped")) {
       overallStatus = "shipped";
     } else if (itemStatuses.some((s) => s === "processing")) {
