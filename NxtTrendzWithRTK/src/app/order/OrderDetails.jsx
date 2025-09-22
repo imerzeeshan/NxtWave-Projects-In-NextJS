@@ -10,100 +10,41 @@ import {
   XCircle,
   Truck,
   MapPin,
+  Package,
 } from "lucide-react";
 
 const OrderDetails = ({ orderDetails }) => {
   const [expanded, setExpanded] = useState(false);
 
+  // 🔹 Define steps with icons
   const steps = [
-    "pending",
-    "processing",
-    "shipped",
-    "out_for_delivery",
-    "delivered",
+    { key: "pending", label: "Pending", icon: <Clock size={16} /> },
+    { key: "processing", label: "Processing", icon: <Package size={16} /> },
+    { key: "shipped", label: "Shipped", icon: <Truck size={16} /> },
+    {
+      key: "out_for_delivery",
+      label: "Out For Delivery",
+      icon: <MapPin size={16} />,
+    },
+    { key: "delivered", label: "Delivered", icon: <Check size={16} /> },
   ];
 
-  const stepIcons = {
-    pending: <Clock size={16} />,
-    processing: <Check size={16} />,
-    shipped: <Truck size={16} />,
-    out_for_delivery: <MapPin size={16} />,
-    delivered: <Check size={16} />,
-    cancelled: <XCircle size={18} />,
+  const cancelledStep = {
+    key: "cancelled",
+    label: "Cancelled",
+    icon: <XCircle size={18} />,
   };
-
-  // Determine the current step index
-  const currentStepIndex = steps.indexOf(
-    orderDetails.status === "cancelled"
-      ? orderDetails.cancelledAtStep || "shipped"
-      : orderDetails.status
-  );
 
   const isCancelled = orderDetails.status === "cancelled";
 
-  const renderProgressBar = () => {
-    return (
-      <div className="flex items-center justify-between mt-6 relative">
-        {steps.map((step, index) => {
-          const completedBeforeCancel = isCancelled && index < currentStepIndex;
-          const isCompleted =
-            (!isCancelled && index < currentStepIndex) || completedBeforeCancel;
-          const isActive = index === currentStepIndex && !isCancelled;
-          const isCancelStep = isCancelled && index === currentStepIndex;
-
-          return (
-            <div
-              key={step}
-              className="flex-1 flex flex-col items-center relative"
-            >
-              {/* Horizontal Line */}
-              {index < steps.length - 1 && (
-                <div className="absolute top-1/2 left-1/2 w-full h-2 -z-10 transform -translate-x-1/2">
-                  <div
-                    className={`h-2 w-full rounded-full transition-all duration-500`}
-                    style={{
-                      background: isCancelled
-                        ? index < currentStepIndex
-                          ? "linear-gradient(to right, #facc15, #f59e0b)" // previous steps amber gradient
-                          : "linear-gradient(to right, red, red)" // cancelled steps red
-                        : index < currentStepIndex
-                        ? "linear-gradient(to right, #facc15, #f59e0b)" // regular completed
-                        : "linear-gradient(to right, #4b5563, #4b5563)", // gray
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Circle with icon */}
-              <div
-                className={`w-10 h-10 flex items-center justify-center rounded-full shadow-md transition-all duration-500
-                  ${isCompleted ? "bg-amber-400 text-black" : ""}
-                  ${
-                    isActive
-                      ? "bg-yellow-400 text-black ring-4 ring-yellow-200 animate-pulse"
-                      : ""
-                  }
-                  ${isCancelStep ? "bg-red-500 text-white" : ""}
-                  ${
-                    !isCompleted && !isActive && !isCancelStep
-                      ? "bg-gray-600 text-gray-300"
-                      : ""
-                  }
-                `}
-              >
-                {isCancelStep ? stepIcons.cancelled : stepIcons[step]}
-              </div>
-
-              {/* Label */}
-              <span className="text-xs mt-2 text-gray-300 text-center">
-                {step.replaceAll("_", " ")}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  // Find the current step index
+  const currentStepIndex = steps.findIndex(
+    (s) =>
+      s.key ===
+      (isCancelled
+        ? orderDetails.cancelledAtStep || "shipped"
+        : orderDetails.status)
+  );
 
   return (
     <div className="bg-gray-800 text-white rounded-2xl shadow-md p-6 space-y-4">
@@ -139,8 +80,58 @@ const OrderDetails = ({ orderDetails }) => {
         })}
       </p>
 
-      {/* Progress Bar */}
-      {renderProgressBar()}
+      {/* 🔹 Progress Bar */}
+      <div className="flex items-center justify-between mt-3">
+        {steps.map((step, index) => {
+          const completedBeforeCancel = isCancelled && index < currentStepIndex;
+          const isCompleted =
+            (!isCancelled && index <= currentStepIndex) ||
+            completedBeforeCancel;
+          const isCancelStep = isCancelled && index === currentStepIndex;
+
+          return (
+            <div
+              key={step.key}
+              className="flex-1 flex flex-col items-center relative min-h-20 md:min-h-15"
+            >
+              {/* Circle with icon */}
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all duration-300
+                  ${isCompleted ? "bg-amber-400 text-black" : ""}
+                  ${isCancelStep ? "bg-red-500 text-white" : ""}
+                  ${
+                    !isCompleted && !isCancelStep
+                      ? "bg-gray-600 text-gray-300"
+                      : ""
+                  }
+                `}
+              >
+                {isCancelStep ? cancelledStep.icon : step.icon}
+              </div>
+
+              {/* Label */}
+              <span className="text-xs mt-1 text-gray-300 text-center">
+                {step.label}
+              </span>
+
+              {/* Horizontal Line */}
+              {index <= steps.length - 1 && (
+                <div
+                  className={`h-1 w-full absolute bottom-0 ${
+                    isCancelled
+                      ? index < currentStepIndex
+                        ? "bg-amber-400"
+                        : "bg-red-500"
+                      : index <= currentStepIndex
+                      ? "bg-amber-400"
+                      : "bg-gray-600"
+                  }`}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
 
       {/* Metadata */}
       <div className="space-y-1 text-sm text-gray-300">
@@ -160,7 +151,7 @@ const OrderDetails = ({ orderDetails }) => {
         </p>
       </div>
 
-      {/* Expand / Collapse Toggle */}
+      {/* Expand / Collapse */}
       <button
         onClick={() => setExpanded(!expanded)}
         className="text-sm text-amber-400 hover:underline"
@@ -176,7 +167,7 @@ const OrderDetails = ({ orderDetails }) => {
         )}
       </button>
 
-      {/* Items (Collapsible) */}
+      {/* Items */}
       {expanded && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {orderDetails.items.map((item) => (

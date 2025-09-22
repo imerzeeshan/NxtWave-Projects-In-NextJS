@@ -1,8 +1,9 @@
 "use client";
+import Orders from "@/app/admin/orders/page";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const Orders = () => {
+const SellerOrders = () => {
   const { user } = useSelector((state) => state.auth);
 
   console.log(user);
@@ -30,9 +31,9 @@ const Orders = () => {
   }, []);
   return (
     <div className="mt-16">
-      <h1>Orders</h1>
+      <Orders />
     </div>
   );
 };
 
-export default Orders;
+export default SellerOrders;

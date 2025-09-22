@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Check, Clock, Circle } from "lucide-react"; // ✅ Icons
+import Loading from "@/app/loading";
 
 const Orders = () => {
   const { user } = useSelector((state) => state.auth);
@@ -191,7 +192,7 @@ const Orders = () => {
     setSearchTerm("");
   };
 
-  if (loading) return <p className="p-4">Loading orders...</p>;
+  if (loading) return <Loading />;
 
   return (
     <div className="mt-10 p-6">
