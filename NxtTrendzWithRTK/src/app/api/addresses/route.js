@@ -14,7 +14,7 @@ export async function GET() {
   try {
     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
     const addresses = await Address.find({ userId: decode.id });
-    return NextResponse.json(addresses);
+    return NextResponse.json({ success: true, addresses }, { status: 200 });
   } catch (err) {
     return NextResponse.json([], { status: 401 });
   }
@@ -31,14 +31,31 @@ export async function POST(req) {
   try {
     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
     const data = await req.json();
+    console.log(data);
+
+    if (data.isDefault) {
+      await Address.updateMany(
+        { userId: decode.id },
+        { $set: { isDefault: false } }
+      );
+    }
 
     const newAddr = await Address.create({
       ...data,
       userId: decode.id,
     });
 
-    return NextResponse.json(newAddr);
+    return NextResponse.json({ success: true, newAddr }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
+}
+
+export async function PUT(req) {
+  try {
+    const data = await req.json();
+    console.log(data);
+
+    return NextResponse.json({ success: true }, { status: 201 });
+  } catch (error) {}
 }

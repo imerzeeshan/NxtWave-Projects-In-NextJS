@@ -11,9 +11,14 @@ import {
   Truck,
   MapPin,
   Package,
+  Cross,
 } from "lucide-react";
+import {
+  CancelOrderAction,
+  RemoveOrderFromOrderList,
+} from "./cancellOrderAction";
 
-const OrderDetails = ({ orderDetails }) => {
+const OrderDetails = ({ orderDetails, handleGetAllOrders }) => {
   const [expanded, setExpanded] = useState(false);
 
   // 🔹 Define steps with icons
@@ -46,13 +51,30 @@ const OrderDetails = ({ orderDetails }) => {
         : orderDetails.status)
   );
 
+  const handleCancelButton = async (orderId) => {
+    // const res = await fetch("/api/user/orders", {
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ orderId }),
+    // });
+    // const data = await res.json();
+
+    const data = await CancelOrderAction(orderId);
+    console.log(data);
+    handleGetAllOrders();
+  };
+  const handleRemoveOrderButton = async (orderId) => {
+    const data = await RemoveOrderFromOrderList(orderId);
+    console.log(data);
+    alert(data.message);
+    handleGetAllOrders();
+  };
+
   return (
     <div className="bg-gray-800 text-white rounded-2xl shadow-md p-6 space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">
-          Order #{orderDetails._id.slice(-6)}
-        </h2>
+        <h2 className="text-xl font-semibold">Order #{orderDetails._id}</h2>
         <span
           className={`px-3 py-1 text-sm rounded-full ${
             orderDetails.status === "delivered"
@@ -137,16 +159,22 @@ const OrderDetails = ({ orderDetails }) => {
       <div className="space-y-1 text-sm text-gray-300">
         <p>
           <span className="font-semibold text-white">Payment Method:</span>{" "}
-          {orderDetails.paymentMethod || "N/A"}
+          {orderDetails.payment.method || "N/A"}
         </p>
         <p>
           <span className="font-semibold text-white">Payment Status:</span>{" "}
-          {orderDetails.paymentStatus || "N/A"}
+          {orderDetails.payment.status || "N/A"}
         </p>
         <p>
           <span className="font-semibold text-white">Shipping Address:</span>{" "}
-          {orderDetails.shippingAddress
-            ? `${orderDetails.shippingAddress.street}, ${orderDetails.shippingAddress.city}, ${orderDetails.shippingAddress.country}`
+          {orderDetails.address
+            ? `${orderDetails.address.houseDetails}, ${
+                orderDetails.address.areaDetails
+              }, 
+             ${orderDetails.address.city}, ${orderDetails.address.state}, ${
+                orderDetails.address.country
+              }, 
+             ${orderDetails.address.pincode}`
             : "N/A"}
         </p>
       </div>
@@ -184,14 +212,35 @@ const OrderDetails = ({ orderDetails }) => {
         </p>
 
         <div className="flex gap-3">
-          <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition">
-            Track Order
-          </button>
-          <button className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 transition">
-            Reorder
-          </button>
-          <button className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 transition">
+          {(orderDetails.status === "delivered" ||
+            orderDetails.status === "cancelled") && (
+            <button
+              onClick={() => handleRemoveOrderButton(orderDetails._id)}
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition"
+            >
+              Delete Order
+            </button>
+          )}
+          {(orderDetails.status === "delivered" ||
+            orderDetails.status === "cancelled") && (
+            <button className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 transition">
+              Reorder
+            </button>
+          )}
+          <button className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition">
             Download Invoice
+          </button>
+
+          <button
+            disabled={
+              orderDetails.status === "delivered" ||
+              orderDetails.status === "cancelled"
+            }
+            onClick={() => handleCancelButton(orderDetails._id)}
+            className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition disabled:bg-gray-500 
+            disabled:cursor-not-allowed"
+          >
+            Cancel Order
           </button>
         </div>
       </div>

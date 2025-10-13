@@ -6,10 +6,20 @@ import jwt from "jsonwebtoken";
 import Cart from "@/models/Cart";
 import { connectToDatabase } from "@/lib/db";
 import Order from "@/models/Orders";
+import Address from "@/models/Address";
 
 export async function POST(req) {
   try {
-    // const body = await req.json();
+    const body = await req.json();
+    const { selectedAddressId, paymentMod } = body;
+    console.log({ selectedAddressId });
+
+    if (!selectedAddressId) {
+      return NextResponse.json(
+        { success: false, message: "Please Select Delivery Address" },
+        { status: 401 }
+      );
+    }
 
     const cookie = await cookies();
     const token = cookie.get("token")?.value;
@@ -21,6 +31,16 @@ export async function POST(req) {
     const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
     await connectToDatabase();
+    const selectedAddress = await Address.findById(selectedAddressId).lean();
+
+    if (!selectedAddress) {
+      return NextResponse.json(
+        { success: false, message: "Invalid Address" },
+        { status: 400 }
+      );
+    }
+    console.log({ selectedAddress });
+
     const cartItems = await Cart.find({ userId: decode.id })
       .populate("product")
       .populate("userId", "name email")
@@ -54,7 +74,7 @@ export async function POST(req) {
       })
     );
 
-    console.log(populatedItems);
+    // console.log(populatedItems);
 
     // ✅ Calculate total amount
     const totalAmount = populatedItems.reduce(
@@ -65,12 +85,20 @@ export async function POST(req) {
     // ✅ Create new order
     const newOrder = await Order.create({
       user: new mongoose.Types.ObjectId(decode.id),
+      address: selectedAddress,
       buyerEmail: decode.email,
       items: populatedItems,
       totalAmount,
+      paymentMod,
+      payment: {
+        method: paymentMod === "cod" ? "Cash On Delivery" : "Online",
+        transactionId: "NA",
+        status: "pending",
+      },
       // shippingAddress,
-      // payment,
     });
+
+    console.log(newOrder.address);
 
     if (!newOrder) {
       throw Error("Something went wrong, Please try after sometime!");
@@ -80,7 +108,12 @@ export async function POST(req) {
     console.log(clearCart);
 
     return NextResponse.json(
-      { newOrder, message: "Order Successful" },
+      {
+        success: true,
+        newOrder,
+        address: newOrder.address,
+        message: "Ordered Successfully",
+      },
       { status: 201 }
     );
   } catch (err) {
@@ -112,6 +145,8 @@ export async function GET() {
       })
       .lean();
 
+    console.log({ orders });
+
     return NextResponse.json({ success: true, orders }, { status: 200 });
   } catch (error) {
     console.error(error);
@@ -120,6 +155,40 @@ export async function GET() {
         success: false,
         message: "Internal Server Error",
       },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req) {
+  try {
+    const { orderId } = await req.json();
+
+    await connectToDatabase();
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return NextResponse.json(
+        { success: false, message: "Order not found" },
+        { status: 404 }
+      );
+    }
+
+    order.status = "cancelled";
+
+    order.items.forEach((item) => (item.status = "cancelled"));
+
+    await order.save();
+    console.log(order);
+
+    return NextResponse.json(
+      { success: true, message: "Order Cancelled", order },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Cancel order error:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to cancel order" },
       { status: 500 }
     );
   }

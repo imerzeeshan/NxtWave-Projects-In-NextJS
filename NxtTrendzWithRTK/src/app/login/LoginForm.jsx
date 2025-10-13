@@ -6,6 +6,7 @@ import SubmitButton from "./SubmitButton";
 import { useLoginMutation } from "@/features/apiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/features/authSlice";
+import Link from "next/link"; // ✅ Added
 
 export default function LoginForm() {
   const router = useRouter();
@@ -21,10 +22,8 @@ export default function LoginForm() {
     const password = formData.get("password");
 
     const result = await login({ email, password });
-    // console.log(result, "login result");
 
     if (result.data) {
-      // console.log("User:", result);
       dispatch(setCredentials(result.data));
       router.push("/");
     }
@@ -63,6 +62,15 @@ export default function LoginForm() {
              focus:ring-blue-500 focus:outline-none"
             placeholder="••••••••"
           />
+          {/* ✅ Forgot password link */}
+          <div className="text-right mt-1">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
         </div>
 
         <SubmitButton isLoading={isLoading} />

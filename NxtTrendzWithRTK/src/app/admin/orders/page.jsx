@@ -342,11 +342,16 @@ const Orders = () => {
               {/* Shipping Info */}
               <div className="bg-gray-50 p-3 rounded-md">
                 <h3 className="text-sm font-semibold mb-1">Shipping Address</h3>
+                <p className="flex">
+                  Contact No. - {"  "}
+                  <span className="text-xl font-semibold pl-5 text-gray-700">
+                    {order.address?.phone}
+                  </span>{" "}
+                </p>
                 <p className="text-sm text-gray-600">
-                  {order.shippingAddress?.street}, {order.shippingAddress?.city}
-                  , {order.shippingAddress?.state}{" "}
-                  {order.shippingAddress?.postalCode},{" "}
-                  {order.shippingAddress?.country}
+                  {order.address?.houseDetails}, {order.address?.areaDetails},
+                  {order.address?.city}, {order.address?.state}{" "}
+                  {order.address?.pincode}, {order.address?.country}
                 </p>
               </div>
 
@@ -359,15 +364,18 @@ const Orders = () => {
                 <p className="text-sm text-gray-600">
                   Transaction ID: {order.payment?.transactionId || "N/A"}
                 </p>
-                <span
-                  className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${
-                    paymentStatusClasses[
-                      order.payment?.status?.toLowerCase()
-                    ] || "bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  {order.payment?.status || "Unknown"}
-                </span>
+                <p>
+                  Status:{" "}
+                  <span
+                    className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${
+                      paymentStatusClasses[
+                        order.payment?.status?.toLowerCase()
+                      ] || "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {order.payment?.status || "Unknown"}
+                  </span>
+                </p>
               </div>
 
               {/* Total */}

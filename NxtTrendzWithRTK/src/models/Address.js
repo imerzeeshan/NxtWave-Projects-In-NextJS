@@ -1,6 +1,6 @@
 import { Schema, models, model } from "mongoose";
 
-const addressSchema = new Schema(
+export const addressSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
@@ -11,6 +11,7 @@ const addressSchema = new Schema(
     landmark: String,
     city: { type: String, required: true },
     state: { type: String, required: true },
+    country: { type: String, required: true, default: "India" },
     addressType: {
       type: String,
       enum: ["Home", "Work", "Other"],

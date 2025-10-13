@@ -1,8 +1,10 @@
 import { useAddToCartItemMutation } from "@/features/cartApiSlice";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const AddToCartButton = ({ productId }) => {
+  const router = useRouter();
   const { user } = useSelector((state) => state.auth);
   const [addToCartItem, { isLoading, isError, error, isSuccess, data }] =
     useAddToCartItemMutation();
@@ -14,6 +16,9 @@ const AddToCartButton = ({ productId }) => {
       userId: user?.id,
     });
     console.log(data);
+    if (data.success) {
+      router.push("/cart");
+    }
   };
   return (
     <button

@@ -1,4 +1,5 @@
 import mongoose, { Schema, model, models } from "mongoose";
+import { addressSchema } from "./Address";
 
 // OrderItem schema
 const OrderItemSchema = new Schema({
@@ -22,6 +23,7 @@ const OrderItemSchema = new Schema({
   },
 });
 
+
 // Order schema
 const OrderSchema = new Schema(
   {
@@ -41,13 +43,8 @@ const OrderSchema = new Schema(
       ],
       default: "pending",
     },
-    shippingAddress: {
-      street: String,
-      city: String,
-      state: String,
-      postalCode: String,
-      country: String,
-    },
+    address: addressSchema,
+    paymentMod: { type: String, required: true },
     payment: {
       method: String,
       transactionId: String,

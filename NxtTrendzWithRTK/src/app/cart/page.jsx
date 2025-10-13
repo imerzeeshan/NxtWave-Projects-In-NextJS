@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { useGetAllCartItemsMutation } from "@/features/cartApiSlice";
 import RemoveAllCartItemsButton from "./RevomeAllCartItemsButton";
 import Loading from "../loading";
+import Image from "next/image";
+import Link from "next/link";
 
 const CartPage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -97,19 +99,32 @@ const CartPage = () => {
           />
         ))}
       </div>
-      <div className="text-right mt-6">
+      <div className="text-right mt-6 space-y-5">
         <p className="text-xl font-bold">Total: Rs {totalAmount}/-</p>
-        <button
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white cursor-pointer my-5 "
-          onClick={handleOrder}
+        <Link
+          href={"/checkout"}
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white cursor-pointer my-5"
+          // onClick={handleOrder}
         >
           Order Now
-        </button>
+        </Link>
       </div>
     </div>
   ) : (
-    <div className="mt-29 text-center text-4xl font-semibold">
-      Cart is Empty
+    <div className="h-screen flex flex-col justify-center items-center font-semibold gap-5">
+      <Image
+        src={"/images/empty-cart-img.png"}
+        width={300}
+        height={300}
+        alt="empty cart image"
+      />
+      <h1 className="text-4xl text-blue-950"> Cart is Empty</h1>
+      <Link
+        href={"/product"}
+        className="px-3.5 py-2 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600"
+      >
+        Shop Now
+      </Link>
     </div>
   );
 };

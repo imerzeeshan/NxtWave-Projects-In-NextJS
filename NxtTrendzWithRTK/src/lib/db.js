@@ -5,6 +5,7 @@ import "@/models/Orders";
 import "@/models/Product";
 import "@/models/Cart";
 import "@/models/Address";
+import "@/models/Category";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 console.log(MONGODB_URI);

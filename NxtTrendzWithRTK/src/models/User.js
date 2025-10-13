@@ -18,6 +18,8 @@ const userSchema = new Schema(
       thumbnailUrl: { type: String },
       fileId: { type: String },
     },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
   },
   { timestamps: true }
 );

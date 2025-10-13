@@ -25,14 +25,11 @@ export default function Address() {
   const dispatch = useDispatch();
   const { addresses } = useSelector((state) => state.addresses);
 
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
-
   async function fetchAddresses() {
     const res = await fetch("/api/addresses");
     const data = await res.json();
-    dispatch(setAddresses(data));
+
+    dispatch(setAddresses(data.addresses));
   }
 
   async function setDefaultAddress(addressId) {
@@ -60,6 +57,7 @@ export default function Address() {
         landmark: "",
         city: "",
         state: "",
+        country: "India",
         addressType: "Home",
       });
     }
@@ -83,6 +81,10 @@ export default function Address() {
     setEditingAddress(null);
     await fetchAddresses();
   }
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto mt-10 space-y-4">
@@ -110,7 +112,7 @@ export default function Address() {
                 </p>
                 <p className="text-sm text-gray-600">
                   {addr.houseDetails}, {addr.areaDetails}, {addr.city},{" "}
-                  {addr.state} - {addr.pincode}
+                  {addr.state}, {addr.country} - {addr.pincode}
                 </p>
                 <p className="text-xs text-gray-500">
                   Type: {addr.addressType}

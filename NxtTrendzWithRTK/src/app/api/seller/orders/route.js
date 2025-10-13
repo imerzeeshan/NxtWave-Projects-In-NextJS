@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import Product from "@/models/Product";
 import mongoose from "mongoose";
 import { cookies } from "next/headers";

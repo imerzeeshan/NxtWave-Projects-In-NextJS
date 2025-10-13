@@ -30,7 +30,11 @@ const OrdersPage = () => {
       <div className="space-y-8">
         {myOrders.length > 0 ? (
           myOrders.map((order) => (
-            <OrderDetails key={order._id} orderDetails={order} />
+            <OrderDetails
+              key={order._id}
+              orderDetails={order}
+              handleGetAllOrders={handleGetAllOrders}
+            />
           ))
         ) : (
           <p className="text-gray-400">You have no orders yet.</p>
